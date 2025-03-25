@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\AdminRequest;
 use Illuminate\Support\Facades\Auth;
@@ -69,8 +70,10 @@ class AdminAuthController extends Controller
             return $this->validationError($validator->errors());
         }
 
+        $credentials = $request->only('email', 'password');
 
-        if (!$token = Auth::guard('admin_api')->attempt($request->only('email', 'password'))) {
+        // Use the 'admin_api' guard
+        if (!$token = Auth::guard('admin_api')->attempt($credentials)) {
             return $this->authError('Invalid email or password');
         }
 

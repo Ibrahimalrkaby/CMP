@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AdminRequest;
 use App\Models\Admin;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use App\Http\Requests\AdminRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -28,7 +27,7 @@ class AdminAuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:admins',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -47,7 +46,7 @@ class AdminAuthController extends Controller
         }
 
         return $this->respondWithToken(
-            JWTAuth::fromUser($admin),
+            JWTAuth::guard('admin')->fromUser($admin),
             ['user' => $admin, 'message' => 'User registered successfully'],
             201
         );
@@ -70,7 +69,7 @@ class AdminAuthController extends Controller
         }
 
 
-        if (!$token = Auth::guard('admin_api')->attempt($request->only('email', 'password'))) {
+        if (!$token = JWTAuth::guard('admin')->attempt($request->only('email', 'password'))) {
             return $this->authError('Invalid email or password');
         }
 
@@ -83,7 +82,7 @@ class AdminAuthController extends Controller
     public function me()
     {
         try {
-            $admin = auth()->guard('admin_api')->user();
+            $admin = auth()->guard('admins')->user();
 
             if (!$admin) {
                 return response()->json([
@@ -111,7 +110,7 @@ class AdminAuthController extends Controller
      */
     public function logout()
     {
-        auth()->guard('admin_api')->logout();
+        auth()->guard('admin')->logout();
         return response()->json([
             'status' => 'success',
             'message' => 'Successfully logged out'
