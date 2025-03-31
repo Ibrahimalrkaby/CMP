@@ -47,7 +47,7 @@ Route::controller(AdminAuthController::class)->name('admins.')->prefix('admins')
 Route::controller(TeacherAuthController::class)->name('teacher.')->prefix('teacher')->group(function () {
     Route::post('register', 'register')->name('register');
     Route::post('login', 'login')->name('login');
-    Route::middleware('teacher')->group(function () {
+    Route::middleware('admin')->group(function () {
         Route::post('logout', 'logout')->name('logout');
         Route::post('refresh', 'refresh')->name('refresh');
         Route::get('me', 'me')->name('me');

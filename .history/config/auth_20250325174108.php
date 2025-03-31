@@ -52,13 +52,13 @@ return [
             'driver' => 'jwt',
             'provider' => 'admins',
         ],
-        'teacher' => [
+        'prof' => [
             'driver' => 'session',
-            'provider' => 'teachers',
+            'provider' => 'profs',
         ],
-        'teacher_api' => [ // New guard for admins
+        'prof_api' => [ // New guard for admins
             'driver' => 'jwt',
-            'provider' => 'teachers',
+            'provider' => 'profs',
         ],
     ],
 
@@ -88,9 +88,9 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
-        'teachers' => [
+        'profs' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Teacher::class,
+            'model' => App\Models\Prof::class,
         ],
 
         // 'users' => [
@@ -131,8 +131,8 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
-        'teachers' => [
-            'provider' => 'teachers',
+        'profs' => [
+            'provider' => 'profs',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
