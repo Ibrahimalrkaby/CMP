@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -33,26 +32,10 @@ class StudentData extends Model
     }
 
     /**
-     * The courses that belong to the student.
+     * The semesters that belong to the course.
      */
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class);
-    }
-
-    /**
-     * The supervisor that belongs to the student.
-     */
-    public function supervisor(): BelongsTo
-    {
-        return $this->belongsTo(TeacherData::class, 'supervisor_id', 'id');
-    }
-
-    /**
-     * The program that belongs to the student.
-     */
-    public function program(): BelongsTo
-    {
-        return $this->belongsTo(Program::class);
     }
 }

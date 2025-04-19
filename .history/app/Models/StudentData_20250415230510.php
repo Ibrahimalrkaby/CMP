@@ -47,12 +47,4 @@ class StudentData extends Model
     {
         return $this->belongsTo(TeacherData::class, 'supervisor_id', 'id');
     }
-
-    /**
-     * The program that belongs to the student.
-     */
-    public function program(): BelongsTo
-    {
-        return $this->belongsTo(Program::class);
-    }
 }
