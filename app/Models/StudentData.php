@@ -11,6 +11,7 @@ class StudentData extends Model
 {
     use HasFactory;
 
+    protected $table = 'students_data';
     protected $fillable = [
         'name',
         'email',

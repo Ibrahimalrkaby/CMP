@@ -69,7 +69,7 @@ class AdminAuthController extends Controller
         }
 
 
-        if (!$token = JWTAuth::->attempt($request->only('email', 'password'))) {
+        if (!$token = JWTAuth::attempt($request->only('email', 'password'))) {
             return $this->authError('Invalid email or password');
         }
         return 'ssss';
