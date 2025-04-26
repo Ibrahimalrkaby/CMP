@@ -17,6 +17,7 @@ class TeacherData extends Model
         'department',
         'personal_id',
         'rank',
+        'program_id',
     ];
 
     // One teacher has many students

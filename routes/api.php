@@ -4,8 +4,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\API\StudentController;
+use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\StudentAuthController;
 use App\Http\Controllers\TeacherAuthController;
+use App\Http\Controllers\TeacherController;
+
+
+use App\Models\Teacher;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,7 +69,23 @@ Route::controller(StudentController::class)->prefix('students')->name('students.
         Route::delete('{id}', 'destroy')->name('destroy');    
 });
 
-
+// teacher data routes
+Route::controller(TeacherController::class)->prefix('teachers')->name('teachers.')->group(function () {
+        Route::get('/', 'index')->name('index');              
+        Route::get('{id}', 'show')->name('show');              
+        Route::post('/', 'store')->name('store');             
+        Route::put('{id}', 'update')->name('update');          
+        Route::delete('{id}', 'destroy')->name('destroy');    
+    });
+// program data routes
+Route::controller(ProgramController::class)->prefix('programs')->name('programs.')->group(function () {
+        Route::get('/', 'index')->name('index');              
+        Route::get('{id}', 'show')->name('show');              
+        Route::post('/', 'store')->name('store');             
+        Route::put('{id}', 'update')->name('update');          
+        Route::delete('{id}', 'destroy')->name('destroy');    
+    });
+    
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });

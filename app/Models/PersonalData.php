@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class PersonalData extends Model
 {
     use HasFactory;
+    protected $table = 'students_personal_date';
 
     protected $fillable = [
         'national_id',

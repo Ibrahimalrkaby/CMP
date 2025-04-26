@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TeacherData;
 use Illuminate\Http\Request;
 
-class TeacherDataController extends Controller
+class TeacherController extends Controller
 {
-    //
+    // 
 }

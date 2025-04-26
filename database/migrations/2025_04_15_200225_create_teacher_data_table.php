@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone');
             $table->string('department');
-            $table->string('personal_id');
+            $table->string('personal_id')->unique();
             $table->string('rank');
+            $table->foreignId('program_id')->nullable()->constrained('programs')->nullOnDelete();
+            $table->string('role')->default('doctor');
             $table->timestamps();
         });
     }
