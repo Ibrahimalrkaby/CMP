@@ -10,6 +10,10 @@ class GuardianStudent extends Model
 {
     use HasFactory;
 
+    protected $table = 'students_guardian';
+    protected $primaryKey = 'national_id';
+    public $incrementing = false;
+    
     protected $fillable = [
         'national_id',
         'email',
@@ -17,11 +21,8 @@ class GuardianStudent extends Model
         'city',
     ];
 
-    // Ensure the table name matches your migration
-    protected $table = 'students_guardian';
-
     // Inverse relationship: GuardianStudent HAS ONE StudentData
-    public function studentData(): HasOne
+    public function studentData()
     {
         return $this->hasOne(StudentData::class, 'guardian_id', 'national_id');
     }
