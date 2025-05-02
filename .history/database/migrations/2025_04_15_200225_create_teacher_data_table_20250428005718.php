@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('personal_id');
             $table->string('rank');
             $table->unsignedBigInteger('teacher_id');
-            $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('cascade');
+            $table->foreign('teacher_id')->references('id')->on('teacher')->onDelete('cascade');
             $table->timestamps();
         });
     }

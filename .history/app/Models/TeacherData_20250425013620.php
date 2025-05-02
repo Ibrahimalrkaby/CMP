@@ -32,14 +32,4 @@ class TeacherData extends Model
     {
         return $this->belongsTo(Program::class);
     }
-
-    public function chats()
-    {
-        return $this->hasMany(Chat::class);
-    }
-
-    public function teacher()
-    {
-        return $this->belongsTo(Teacher::class);
-    }
 }

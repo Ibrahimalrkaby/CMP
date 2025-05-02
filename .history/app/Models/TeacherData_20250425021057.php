@@ -37,9 +37,4 @@ class TeacherData extends Model
     {
         return $this->hasMany(Chat::class);
     }
-
-    public function teacher()
-    {
-        return $this->belongsTo(Teacher::class);
-    }
 }

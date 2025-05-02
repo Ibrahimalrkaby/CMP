@@ -35,9 +35,4 @@ class course extends Model
     {
         return $this->belongsToMany(StudentData::class);
     }
-
-    public function chats()
-    {
-        return $this->hasMany(Chat::class);
-    }
 }

@@ -58,6 +58,6 @@ Route::controller(TeacherAuthController::class)->name('teacher.')->prefix('teach
 
 //Chat Route
 Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group(function () {
-    Route::get('/', 'show')->name('show');
+    Route::get('/', 'show')->name('show')->middleware('teacher');
     Route::post('/', 'store')->name('store')->middleware('teacher');
 });
