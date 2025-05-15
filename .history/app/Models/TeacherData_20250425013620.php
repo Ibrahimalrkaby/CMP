@@ -17,7 +17,6 @@ class TeacherData extends Model
         'department',
         'personal_id',
         'rank',
-        'program_id',
     ];
 
     // One teacher has many students
@@ -33,18 +32,4 @@ class TeacherData extends Model
     {
         return $this->belongsTo(Program::class);
     }
-
-<<<<<<< HEAD
-    
-=======
-    public function chats()
-    {
-        return $this->hasMany(Chat::class);
-    }
-
-    public function teacher()
-    {
-        return $this->belongsTo(Teacher::class);
-    }
->>>>>>> c57df93d05283e1d53e827d79f33cb8c41ef7c21
 }

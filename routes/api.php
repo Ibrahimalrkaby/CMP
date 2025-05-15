@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\API\StudentController;
 use App\Http\Controllers\CourseController;
@@ -80,6 +81,7 @@ Route::controller(StudentController::class)->prefix('students')->name('students.
         Route::delete('{id}', 'destroy')->name('destroy');    
 });
 
+<<<<<<< HEAD
 // teacher data routes
 Route::controller(TeacherController::class)->prefix('teachers')->name('teachers.')->group(function () {
         Route::get('/', 'index')->name('index');              
@@ -175,7 +177,40 @@ Route::get('/student/{student_id}/exam-schedule', [ExamScheduleController::class
 Route::get('/teacher/{teacher_id}/exam-schedule', [ExamScheduleController::class, 'teacherExamSchedule']);
 
 
+=======
+<<<<<<< HEAD
+//Admin Auth Route
+Route::controller(AdminAuthController::class)->name('admins.')->prefix('admins')->group(function () {
+    Route::post('register', 'register')->name('register');
+    Route::post('login', 'login')->name('login');
+    Route::middleware('admin')->group(function () {
+        Route::post('logout', 'logout')->name('logout');
+        Route::post('refresh', 'refresh')->name('refresh');
+        Route::get('me', 'me')->name('me');
+    });
+});
+
+//Teacher Auth Route
+Route::controller(TeacherAuthController::class)->name('teacher.')->prefix('teacher')->group(function () {
+    Route::post('register', 'register')->name('register');
+    Route::post('login', 'login')->name('login');
+    Route::middleware('teacher')->group(function () {
+        Route::post('logout', 'logout')->name('logout');
+        Route::post('refresh', 'refresh')->name('refresh');
+        Route::get('me', 'me')->name('me');
+    });
+});
+
+
+//Chat Route
+Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group(function () {
+    Route::get('/', 'show')->name('show');
+    Route::post('/', 'store')->name('store')->middleware('teacher');
+});
+=======
+>>>>>>> c57df93d05283e1d53e827d79f33cb8c41ef7c21
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+>>>>>>> 4b46ad5620c4fd88e444c1ab522910d87cc8d96f

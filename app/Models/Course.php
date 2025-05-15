@@ -35,6 +35,7 @@ class Course extends Model
         return $this->belongsToMany(StudentData::class, 'course_student')
                     ->withPivot('grade');
     }
+<<<<<<< HEAD
     /**
      * The schedules for the course
      */
@@ -63,4 +64,11 @@ class Course extends Model
         return $this->belongsTo(TeacherData::class, 'teacher_id', 'id');
     }
 
+=======
+
+    public function chats()
+    {
+        return $this->hasMany(Chat::class);
+    }
+>>>>>>> c57df93d05283e1d53e827d79f33cb8c41ef7c21
 }
