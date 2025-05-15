@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('personal_id')->unique();
             $table->string('rank');
             $table->foreignId('program_id')->nullable()->constrained('programs')->nullOnDelete();
-            $table->string('role')->default('doctor');
             $table->timestamps();
         });
     }

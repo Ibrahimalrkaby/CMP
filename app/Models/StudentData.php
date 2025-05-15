@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class StudentData extends Model
@@ -12,6 +12,7 @@ class StudentData extends Model
     use HasFactory;
 
     protected $table = 'students_data';
+
     protected $fillable = [
         'name',
         'email',
@@ -55,5 +56,20 @@ class StudentData extends Model
     public function program(): BelongsTo
     {
         return $this->belongsTo(Program::class);
+    }
+
+    // Fees
+    public function fees()
+    {
+        return $this->hasMany(Fee::class);
+    }
+
+    //
+    public function registeredCourses()
+    {
+        return $this->belongsToMany(Course::class, 'course_registrations', 'student_id', 'course_id')
+                    ->with(['schedules', 'teacher'])
+                    ->withPivot('semester_id', 'status')
+                    ->wherePivot('status', 'approved');
     }
 }

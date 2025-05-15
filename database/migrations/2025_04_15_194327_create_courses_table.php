@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // إنشاء جدول الكورسات
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -18,11 +19,22 @@ return new class extends Migration
             $table->string('department');
             $table->string('level');
             $table->string('credit_hours');
-            $table->string('grade');
-            $table->bigInteger('student_id')->unsigned();
-            $table->foreign('student_id')->references('id')->on('students_data');
-            $table->bigInteger('semester_id')->unsigned();
-            $table->foreign('semester_id')->references('id')->on('semesters');
+            $table->timestamps();
+        });
+
+        // إنشاء جدول الربط بين الكورسات والفصول الدراسية
+        Schema::create('course_semester', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->foreignId('semester_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        // إنشاء جدول الربط بين الكورسات والطلاب
+        Schema::create('course_student', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->foreignId('student_id')->constrained('students_data')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +44,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // حذف الجداول المرتبطة
+        Schema::dropIfExists('course_student');
+        Schema::dropIfExists('course_semester');
         Schema::dropIfExists('courses');
     }
 };

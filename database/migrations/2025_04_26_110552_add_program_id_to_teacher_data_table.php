@@ -9,19 +9,23 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::table('teacher_data', function (Blueprint $table) {
-            $table->foreignId('program_id')->constrained('programs')->onDelete('cascade');
-        });
+        // تحقق من وجود العمود قبل إضافته
+        if (!Schema::hasColumn('teacher_data', 'program_id')) {
+            Schema::table('teacher_data', function (Blueprint $table) {
+                $table->bigInteger('program_id')->unsigned()->after('role');
+            });
+        }
     }
 
-    public function down(): void
+    /**
+     * Reverse the migrations.
+     */
+    public function down()
     {
         Schema::table('teacher_data', function (Blueprint $table) {
-            $table->dropForeign(['program_id']);
             $table->dropColumn('program_id');
         });
     }
-
 };

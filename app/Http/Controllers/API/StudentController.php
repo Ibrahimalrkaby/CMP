@@ -7,20 +7,19 @@ use App\Models\GuardianStudent;
 use App\Models\PersonalData;
 use App\Models\StudentData;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
-    // all users
+    // Get all students
     public function index()
     {
-        return response()->json(StudentData::with('guardian')->get());
+        return response()->json(StudentData::with('guardianData')->get());
     }
 
-    // spicific user
+    // Get specific student
     public function show($id)
     {
-        $student = StudentData::with('guardian')->find($id);
+        $student = StudentData::with('guardianData')->find($id);
 
         if (!$student) {
             return response()->json(['message' => 'Student not found'], 404);
@@ -28,17 +27,16 @@ class StudentController extends Controller
         return response()->json($student);
     }
 
-    // create user
+    // Create new student
     public function store(Request $request)
     {
-        // Validation
         $validated = $request->validate([
             // Guardian fields
             'guardian_national_id' => 'required|digits:14',
             'guardian_email' => 'required|email',
             'guardian_phone' => 'required',
             'guardian_city' => 'required',
-    
+
             // Student fields
             'student_name' => 'required|string|max:255',
             'student_email' => 'required|email|unique:students_data,email',
@@ -50,8 +48,8 @@ class StudentController extends Controller
             'age' => 'required|integer',
             'gender' => 'required|string|in:Male,Female',
         ]);
-    
-        // Create or get the guardian (if exists)
+
+        // Create or find the guardian
         $guardian = GuardianStudent::firstOrCreate(
             ['national_id' => $validated['guardian_national_id']],
             [
@@ -60,26 +58,26 @@ class StudentController extends Controller
                 'city' => $validated['guardian_city'],
             ]
         );
-    
-        // Create personal data record
+
+        // Create personal data
         $personalData = PersonalData::create([
-            'national_id' => $validated['student_personal_id'],  // نفس الـ national_id
+            'national_id' => $validated['student_personal_id'],
             'age' => $validated['age'],
             'gender' => $validated['gender'],
         ]);
-    
-        // Create the student and link to the guardian and personal data
+
+        // Create student
         $student = StudentData::create([
             'name' => $validated['student_name'],
             'email' => $validated['student_email'],
             'phone' => $validated['student_phone'],
             'department' => $validated['student_department'],
-            'personal_id' => $personalData->national_id,  // ربط بالـ personal_id
-            'guardian_id' => $guardian->national_id,  // ربط بالـ guardian
+            'personal_id' => $personalData->national_id,
+            'guardian_id' => $guardian->national_id,
             'supervisor_id' => $validated['student_supervisor_id'] ?? null,
             'program_id' => $validated['student_program_id'] ?? null,
         ]);
-    
+
         return response()->json([
             'message' => 'Student created successfully',
             'student' => $student,
@@ -87,10 +85,8 @@ class StudentController extends Controller
             'personal_data' => $personalData
         ], 201);
     }
-    
 
-
-    // update user
+    // Update student
     public function update(Request $request, $id)
     {
         $student = StudentData::find($id);
@@ -99,22 +95,20 @@ class StudentController extends Controller
             return response()->json(['message' => 'Student not found'], 404);
         }
 
-        // Validation
         $request->validate([
             'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:students,email,' . $student->id,
+            'email' => 'sometimes|email|unique:students_data,email,' . $student->id,
             'phone' => 'sometimes|string|max:20',
-            'department' => 'sometimes|exists:departments,id',
+            'department' => 'sometimes|string|max:255',
             'guardian_id' => 'sometimes|exists:students_guardian,national_id',
         ]);
 
-        // Update allowed fields only
         $updatedData = $request->only([
             'name',
             'email',
             'phone',
             'department',
-            'guardian_id',  
+            'guardian_id',
         ]);
 
         $student->update($updatedData);
@@ -125,7 +119,7 @@ class StudentController extends Controller
         ]);
     }
 
-    // delete user
+    // Delete student
     public function destroy($id)
     {
         $student = StudentData::find($id);
@@ -133,8 +127,8 @@ class StudentController extends Controller
         if (!$student) {
             return response()->json(['message' => 'Student not found'], 404);
         }
+
         $student->delete();
         return response()->json(['message' => 'Student deleted successfully']);
     }
-
 }

@@ -10,7 +10,7 @@ class TeacherController extends Controller
     // all teachers
     public function index()
     {
-        $teachers = TeacherData::with('program')->get(); // جلب كل المدرسين مع البرنامج التابع له
+        $teachers = TeacherData::with('program')->get();
         return response()->json([
             'data' => $teachers
         ], 200);

@@ -33,4 +33,6 @@ class TeacherData extends Model
     {
         return $this->belongsTo(Program::class);
     }
+
+    
 }

@@ -6,18 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class course extends Model
+class Course extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name',
         'description',
         'department',
         'level',
         'credit_hours',
-        'grade',
-        'student_id',
-        'semester_id',
+        'teacher_id'
     ];
 
     /**
@@ -25,14 +24,43 @@ class course extends Model
      */
     public function semesters(): BelongsToMany
     {
-        return $this->belongsToMany(Semester::class);
+        return $this->belongsToMany(Semester::class, 'course_semester');
     }
 
     /**
-     * The students that belong to the course.
+     * The students that belong to the course, with their grades.
      */
     public function students(): BelongsToMany
     {
-        return $this->belongsToMany(StudentData::class);
+        return $this->belongsToMany(StudentData::class, 'course_student')
+                    ->withPivot('grade');
     }
+    /**
+     * The schedules for the course
+     */
+    public function schedules()
+    {
+        return $this->hasMany(CourseSchedule::class);
+    }
+
+     /**
+     * Courses that are prerequisites for this course.
+     */
+    public function prerequisites(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class,'course_prerequisites','course_id','prerequisite_course_id');
+    }
+    /**
+     * The schedule exam for the course
+     */
+    public function examSchedules()
+    {
+        return $this->hasMany(ExamSchedule::class);
+    }
+
+    public function teacher()
+    {
+        return $this->belongsTo(TeacherData::class, 'teacher_id', 'id');
+    }
+
 }
