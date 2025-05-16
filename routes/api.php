@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\LectureController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\API\StudentController;
 use App\Http\Controllers\CourseController;
@@ -73,15 +74,16 @@ Route::controller(TeacherAuthController::class)->name('teacher.')->prefix('teach
 });
 
 // student data routes
-Route::controller(StudentController::class)->prefix('students')->name('students.')->group(function () {
-        Route::get('/', 'index')->name('index');              
-        Route::get('{id}', 'show')->name('show');             
-        Route::post('/', 'store')->name('store');             
-        Route::put('{id}', 'update')->name('update');         
-        Route::delete('{id}', 'destroy')->name('destroy');    
+Route::controller(StudentController::class)->prefix('admin')->name('students.')->middleware('admin')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('{id}', 'show')->name('show');
+    Route::post('/', 'store')->name('store');
+    Route::put('{id}', 'update')->name('update');
+    Route::delete('{id}', 'destroy')->name('destroy');
 });
 
 
+<<<<<<< HEAD
 // teacher data routes
 Route::controller(TeacherController::class)->prefix('teachers')->name('teachers.')->group(function () {
         Route::get('/', 'index')->name('index');              
@@ -180,6 +182,8 @@ Route::get('/teacher/{teacher_id}/exam-schedule', [ExamScheduleController::class
 Route::get('semesters/{semester_id}/students/results', [StudentDataController::class, 'getStudentCourseResults'])->name('student.results');
 
 
+=======
+>>>>>>> origin/main
 //Admin Auth Route
 Route::controller(AdminAuthController::class)->name('admins.')->prefix('admins')->group(function () {
     Route::post('register', 'register')->name('register');
@@ -206,8 +210,9 @@ Route::controller(TeacherAuthController::class)->name('teacher.')->prefix('teach
 //Chat Route
 Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group(function () {
     Route::get('/', 'show')->name('show');
-    Route::post('/', 'store')->name('store')->middleware('teacher');
+    Route::post('/', 'store')->name('store');
 });
+<<<<<<< HEAD
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -228,3 +233,29 @@ Route::apiResource('students', StudentDataController::class);
 Route::get('/students/{student}/registered-courses', [StudentDataController::class, 'getRegisteredCourses']);
 Route::patch('/students/{student}/confirm-registration', [StudentDataController::class, 'confirmRegistration']);
 
+=======
+
+
+
+// Route::post('/lectures/{lecture}/attendance', [AttendanceController::class, 'createAttendance'])
+//     ->name('attendance.create');
+
+// Route::put('/lectures/{lecture}/attendance', [AttendanceController::class, 'updateAttendance'])
+//     ->name('attendance.update');
+
+// Route::get('/lectures/{lecture}/attendance', [AttendanceController::class, 'getAttendance'])
+//     ->name('attendance.show');
+
+
+// Route::post('/lectures', [LectureController::class,]);
+// Route::put('/lectures/{lecture}/attendance', [LectureController::class, 'updateAttendance']);
+// Route::get('/lectures/{lecture}/attendance', [LectureController::class, 'getAttendance']);
+
+
+// attendance
+Route::controller(LectureController::class)->group(function () {
+    Route::post('/lectures', 'store')->name('store');
+    Route::put('/lectures/{lecture}/attendance', 'updateAttendance');
+    Route::get('/lectures/{lecture}/attendance', 'getAttendance');
+});
+>>>>>>> origin/main

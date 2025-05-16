@@ -30,10 +30,14 @@ class Course extends Model
     /**
      * The students that belong to the course, with their grades.
      */
-    public function students(): BelongsToMany
+    public function student()
     {
+<<<<<<< HEAD
         return $this->belongsToMany(StudentData::class, 'course_student')
                     ->withPivot('grade');
+=======
+        return $this->belongsTo(StudentData::class, 'student_id', 'student_id');
+>>>>>>> origin/main
     }
 
     /**
@@ -71,4 +75,11 @@ class Course extends Model
         return $this->hasMany(Chat::class);
     }
 
+<<<<<<< HEAD
+=======
+    public function lectures()
+    {
+        return $this->hasMany(Lecture::class);
+    }
+>>>>>>> origin/main
 }

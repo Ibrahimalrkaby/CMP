@@ -82,5 +82,12 @@ class StudentData extends Model
 
     }
 
+<<<<<<< HEAD
+=======
+    public function attendance()
+    {
+        return $this->belongsTo(Attendance::class);
+    }
+>>>>>>> origin/main
 }
 
