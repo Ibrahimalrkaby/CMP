@@ -38,7 +38,7 @@ class CourseRegistrationController extends Controller
                 ->where('course_id', $prerequisite->id)
                 ->where('status', 'confirmed')
                 ->whereNotNull('grade')
-                ->where('grade', '>=', 50) // assuming 50 is the pass mark
+                ->where('grade', '>=', 60) 
                 ->exists();
 
             if (!$hasPassed) {
@@ -85,6 +85,19 @@ class CourseRegistrationController extends Controller
         ]);
     }
 
+    // helper function to convert grades to points
+    private function convertGradeToPoints($grade)
+    {
+        switch ($grade) {
+            case 'A': return 4.0;
+            case 'B': return 3.0;
+            case 'C': return 2.0;
+            case 'D': return 1.0;
+            case 'F': return 0.0;
+            default: return 0.0;
+        }
+    }
+    
     // helper function to calculate GPA
     private function calculateStudentGPA($studentId)
     {
@@ -106,18 +119,6 @@ class CourseRegistrationController extends Controller
         return $totalPoints / $totalCourses;
     }
 
-    // helper function to convert grades to points
-    private function convertGradeToPoints($grade)
-    {
-        switch ($grade) {
-            case 'A': return 4.0;
-            case 'B': return 3.0;
-            case 'C': return 2.0;
-            case 'D': return 1.0;
-            case 'F': return 0.0;
-            default: return 0.0;
-        }
-    }
 
 
     // Get all course registrations for a student

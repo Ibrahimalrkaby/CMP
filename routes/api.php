@@ -20,7 +20,7 @@ use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\StudentAuthController;
 use App\Http\Controllers\TeacherAuthController;
 use App\Http\Controllers\TeacherController;
-
+use App\Http\Controllers\StudentDataController;
 
 use App\Models\Teacher;
 
@@ -81,7 +81,7 @@ Route::controller(StudentController::class)->prefix('students')->name('students.
         Route::delete('{id}', 'destroy')->name('destroy');    
 });
 
-<<<<<<< HEAD
+
 // teacher data routes
 Route::controller(TeacherController::class)->prefix('teachers')->name('teachers.')->group(function () {
         Route::get('/', 'index')->name('index');              
@@ -176,9 +176,10 @@ Route::get('/teacher/{student_id}/schedules', [CourseScheduleController::class, 
 Route::get('/student/{student_id}/exam-schedule', [ExamScheduleController::class, 'studentExamSchedule']);
 Route::get('/teacher/{teacher_id}/exam-schedule', [ExamScheduleController::class, 'teacherExamSchedule']);
 
+// studenr result (doctor)
+Route::get('semesters/{semester_id}/students/results', [StudentDataController::class, 'getStudentCourseResults'])->name('student.results');
 
-=======
-<<<<<<< HEAD
+
 //Admin Auth Route
 Route::controller(AdminAuthController::class)->name('admins.')->prefix('admins')->group(function () {
     Route::post('register', 'register')->name('register');
@@ -207,10 +208,9 @@ Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group
     Route::get('/', 'show')->name('show');
     Route::post('/', 'store')->name('store')->middleware('teacher');
 });
-=======
->>>>>>> c57df93d05283e1d53e827d79f33cb8c41ef7c21
+
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
->>>>>>> 4b46ad5620c4fd88e444c1ab522910d87cc8d96f
+

@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-<<<<<<< HEAD
-=======
+
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
->>>>>>> c57df93d05283e1d53e827d79f33cb8c41ef7c21
+
 
 class Program extends Model
 {
@@ -16,7 +15,8 @@ class Program extends Model
 
     protected $fillable = [
         'name',
-<<<<<<< HEAD
+        'teacher_id',
+        'student_id',
         'description',
     ];
 
@@ -24,10 +24,6 @@ class Program extends Model
     {
         return $this->hasMany(TeacherData::class);
     }
-=======
-        'teacher_id',
-        'student_id',
-    ];
 
 
     /**
@@ -45,6 +41,6 @@ class Program extends Model
     {
         return $this->hasMany(StudentData::class);
     }
->>>>>>> c57df93d05283e1d53e827d79f33cb8c41ef7c21
+
 }
 

@@ -20,6 +20,7 @@ class StudentData extends Model
         'department',
         'personal_id',
         'guardian_id',
+        'academic_year',
     ];
 
     // Relationship to PersonalData (StudentData BELONGS TO PersonalData)
@@ -72,6 +73,7 @@ class StudentData extends Model
                     ->with(['schedules', 'teacher'])
                     ->withPivot('semester_id', 'status')
                     ->wherePivot('status', 'approved');
+
     }                
 
     public function user()
@@ -79,4 +81,6 @@ class StudentData extends Model
         return $this->belongsTo(User::class);
 
     }
+
 }
+

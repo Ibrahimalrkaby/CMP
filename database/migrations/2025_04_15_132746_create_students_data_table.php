@@ -26,6 +26,8 @@ return new class extends Migration
             $table->foreign('guardian_id')->references('national_id')->on('students_guardian');
 
             $table->timestamps();
+
+            $table->string('academic_year')->nullable();
         });
     }
 

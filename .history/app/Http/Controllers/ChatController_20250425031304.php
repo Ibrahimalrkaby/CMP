@@ -40,3 +40,4 @@ class ChatController extends Controller
         'data' => $messages
     ]);
 }
+}
