@@ -17,12 +17,11 @@ return new class extends Migration
             $table->string('department');
             $table->string('personal_id')->unique();
             $table->string('rank');
-<<<<<<< HEAD
+
             $table->foreignId('program_id')->nullable()->constrained('programs')->nullOnDelete();
-=======
             $table->unsignedBigInteger('teacher_id');
             $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('cascade');
->>>>>>> c57df93d05283e1d53e827d79f33cb8c41ef7c21
+
             $table->timestamps();
         });
     }

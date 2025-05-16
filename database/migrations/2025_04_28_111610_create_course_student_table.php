@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->foreign('student_id')->references('id')->on('students_data')->onDelete('cascade');
             $table->primary(['course_id', 'student_id']);
+            $table->string('grade')->nullable(); // Adjust data type as needed
         });
     }
 

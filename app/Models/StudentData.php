@@ -20,6 +20,7 @@ class StudentData extends Model
         'department',
         'personal_id',
         'guardian_id',
+        'academic_year',
     ];
 
     // Relationship to PersonalData (StudentData BELONGS TO PersonalData)
@@ -58,7 +59,7 @@ class StudentData extends Model
         return $this->belongsTo(Program::class);
     }
 
-<<<<<<< HEAD
+
     // Fees
     public function fees()
     {
@@ -72,10 +73,23 @@ class StudentData extends Model
                     ->with(['schedules', 'teacher'])
                     ->withPivot('semester_id', 'status')
                     ->wherePivot('status', 'approved');
-=======
+    }
     public function user()
     {
         return $this->belongsTo(User::class);
->>>>>>> c57df93d05283e1d53e827d79f33cb8c41ef7c21
+
     }
+
+
+
+
+    /**
+     * Establish Relationship with Result.
+     */
+    // public function results()
+    // {
+    //     return $this->hasMany(Result::class);
+    // }
+
 }
+
