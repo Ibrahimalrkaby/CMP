@@ -214,3 +214,17 @@ Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group
 //     return $request->user();
 // });
 
+
+
+
+//  API for getRegisteredCourses 
+
+Route::apiResource('students', StudentDataController::class);
+Route::get('/students/{student}/registered-courses', [StudentDataController::class, 'getRegisteredCourses']);
+
+// API for confirmRegistration
+
+Route::apiResource('students', StudentDataController::class);
+Route::get('/students/{student}/registered-courses', [StudentDataController::class, 'getRegisteredCourses']);
+Route::patch('/students/{student}/confirm-registration', [StudentDataController::class, 'confirmRegistration']);
+

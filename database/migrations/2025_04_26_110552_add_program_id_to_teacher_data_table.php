@@ -14,7 +14,8 @@ return new class extends Migration
         // تحقق من وجود العمود قبل إضافته
         if (!Schema::hasColumn('teacher_data', 'program_id')) {
             Schema::table('teacher_data', function (Blueprint $table) {
-                $table->bigInteger('program_id')->unsigned()->after('role');
+                $table->unsignedBigInteger('program_id')->nullable()->after('role');
+                $table->foreign('program_id')->references('id')->on('programs')->onDelete('set null');
             });
         }
     }
@@ -25,7 +26,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('teacher_data', function (Blueprint $table) {
-            $table->dropColumn('program_id');
+            $table->dropForeign(['program_id']); // Drop the foreign key constraint
+            $table->dropColumn('program_id');     // Then drop the column
         });
     }
 };
