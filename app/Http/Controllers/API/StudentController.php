@@ -72,7 +72,7 @@ class StudentController extends Controller
             'email' => $validated['student_email'],
             'phone' => $validated['student_phone'],
             'department' => $validated['student_department'],
-            'personal_id' => $personalData->national_id,
+            'personal_id' => $personalData->id,
             'guardian_id' => $guardian->national_id,
             'supervisor_id' => $validated['student_supervisor_id'] ?? null,
             'program_id' => $validated['student_program_id'] ?? null,

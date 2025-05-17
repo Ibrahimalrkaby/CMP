@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\API\StudentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CoursePrerequisiteController;
@@ -81,6 +82,16 @@ Route::controller(StudentController::class)->prefix('students')->name('students.
         Route::delete('{id}', 'destroy')->name('destroy');    
 });
 
+// admin data routes
+
+Route::prefix('admin')->name('admin.')->controller(AdminController::class)->group(function () {
+        Route::get('/', 'index')->name('index');          
+        Route::get('{id}', 'show')->name('show');       
+        Route::post('/', 'store')->name('store');         
+        Route::put('{id}', 'update')->name('update');  
+        Route::delete('{id}', 'destroy')->name('destroy');
+    });
+
 
 // teacher data routes
 Route::controller(TeacherController::class)->prefix('teachers')->name('teachers.')->group(function () {
@@ -147,7 +158,7 @@ Route::prefix('course-prerequisites')->controller(CoursePrerequisiteController::
 });
 
 // mail box routes
-Route::middleware('auth:api')->prefix('mailbox')->name('mailbox.')->controller(MailboxController::class)->group(function () {
+Route::prefix('mailbox')->name('mailbox.')->controller(MailboxController::class)->group(function () {
     Route::post('/', 'sendMessage')->name('send');
     Route::get('/student/{student_id}', 'studentInbox')->name('inbox');
     Route::get('/read/{id}', 'readMessage')->name('read');
@@ -170,7 +181,7 @@ Route::prefix('fees')->name('fees.')->controller(FeeController::class)->group(fu
 
 // course schedule routes
 Route::get('/student/{student_id}/schedules', [CourseScheduleController::class, 'index']);
-Route::get('/teacher/{student_id}/schedules', [CourseScheduleController::class, 'teacherSchedule']);
+Route::get('/teacher/{teacher_id}/schedules', [CourseScheduleController::class, 'teacherSchedule']);
 
 // course exam routes
 Route::get('/student/{student_id}/exam-schedule', [ExamScheduleController::class, 'studentExamSchedule']);

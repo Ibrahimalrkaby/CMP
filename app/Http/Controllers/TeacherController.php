@@ -42,6 +42,7 @@ class TeacherController extends Controller
             'department' => 'required|string|max:255',
             'personal_id' => 'required|string|unique:teacher_data,personal_id',
             'rank' => 'required|string|max:255',
+            'role' => 'required|string|in:teacher,assistant,doctor',
             'program_id' => 'nullable|exists:programs,id',
         ]);
 
@@ -52,6 +53,7 @@ class TeacherController extends Controller
             'department' => $validatedData['department'],
             'personal_id' => $validatedData['personal_id'],
             'rank' => $validatedData['rank'],
+            'role' => $validatedData['role'],
             'program_id' => $validatedData['program_id'],
         ]);
 

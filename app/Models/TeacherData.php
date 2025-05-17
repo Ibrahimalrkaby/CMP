@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class TeacherData extends Model
 {
     use HasFactory;
-
+    protected $table = 'teacher_data';
     protected $fillable = [
         'name',
         'email',
@@ -18,6 +18,7 @@ class TeacherData extends Model
         'personal_id',
         'rank',
         'program_id',
+        'role',
     ];
 
     // One teacher has many students

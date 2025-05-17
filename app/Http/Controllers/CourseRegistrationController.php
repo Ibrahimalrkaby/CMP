@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\CourseRegistration;
+use App\Models\CourseStudent;
 use Illuminate\Http\Request;
 
 class CourseRegistrationController extends Controller
@@ -34,14 +35,13 @@ class CourseRegistrationController extends Controller
         // Check if the student has passed all prerequist courses
         $course = Course::with('prerequisites')->findOrFail($courseId);
         foreach ($course->prerequisites as $prerequisite) {
-            $hasPassed = CourseRegistration::where('student_id', $studentId)
-                ->where('course_id', $prerequisite->id)
-                ->where('status', 'confirmed')
+            $passed = CourseStudent::where('student_id', $studentId)
+                ->where('course_id', $courseId)
                 ->whereNotNull('grade')
-                ->where('grade', '>=', 60) 
+                ->where('grade', '>=', 60)
                 ->exists();
 
-            if (!$hasPassed) {
+            if (!$passed) {
                 return response()->json([
                     'message' => 'Missing prerequisite: ' . $prerequisite->name
                 ], 400);
@@ -102,7 +102,7 @@ class CourseRegistrationController extends Controller
     private function calculateStudentGPA($studentId)
     {
         // calculate GPA based on the grades stored in the course student pivot
-        $registrations = CourseRegistration::where('student_id', $studentId)->whereNotNull('grade')->get();
+        $registrations = CourseStudent::where('student_id', $studentId)->whereNotNull('grade')->get();
         $totalPoints = 0;
         $totalCourses = 0;
 

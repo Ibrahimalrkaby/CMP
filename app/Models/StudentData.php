@@ -21,6 +21,7 @@ class StudentData extends Model
         'personal_id',
         'guardian_id',
         'academic_year',
+        'program_id'
     ];
 
     // Relationship to PersonalData (StudentData BELONGS TO PersonalData)
@@ -72,7 +73,7 @@ class StudentData extends Model
         return $this->belongsToMany(Course::class, 'course_registrations', 'student_id', 'course_id')
                     ->with(['schedules', 'teacher'])
                     ->withPivot('semester_id', 'status')
-                    ->wherePivot('status', 'approved');
+                    ->wherePivot('status', 'confirmed');
 
     }                
 
