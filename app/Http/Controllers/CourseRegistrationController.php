@@ -6,6 +6,8 @@ use App\Models\Course;
 use App\Models\CourseRegistration;
 use App\Models\CourseStudent;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Models\StudentData;
 
 class CourseRegistrationController extends Controller
 {
@@ -165,4 +167,88 @@ class CourseRegistrationController extends Controller
         return response()->json(['message' => 'Registration deleted successfully']);
     }
 
+ // ( registered course section ) in (doctor):
+ /**
+     * Get registered courses for a student with details, calculations, and student name search.
+     *
+     * @param int $studentId The ID of the student.
+     * @param Request $request The HTTP request, potentially containing a search term.
+     * @return JsonResponse Returns a JSON response containing registered courses,
+     * total registered hours, and total completed hours.
+     */
+    public function getRegisteredCourses(int $studentId, Request $request): JsonResponse
+    {
+        // Find the student or return 404 if not found
+        $student = StudentData::findOrFail($studentId);
+
+        // Fetch registered courses using the relationship defined in StudentData model
+        $registeredCourses = $student->registeredCourses()
+            ->with(['semester:id,description']) // Eager load semester description (optimize query)
+            ->when($request->has('search'), function ($query) use ($request) {
+                $search = $request->query('search');
+                // Filter the courses based on the student's name
+                $query->where('students_data.name', 'like', '%' . $search . '%');
+            })
+            ->get();
+
+        // Calculate total registered hours by summing credit hours of fetched courses
+        $totalRegisteredHours = $registeredCourses->sum('credit_hours');
+
+        // Calculate total numberof hours using the relationship and filtering by status
+        $totalnumberofHours = $student->registeredCourses()
+            ->where('course_registrations.status', 'confirmed') // Filter for numberof courses
+            ->sum('credit_hours');
+
+        // Format the course data for the response
+        $formattedCourses = $registeredCourses->map(function ($course) {
+            return [
+                'course_code' => $course->code,
+                'course_name' => $course->name,
+                'credit_hours' => $course->credit_hours,
+                'semester' => $course->pivot->semester->description ?? null, // Access semester description
+            ];
+        });
+
+        // Return the formatted response
+        return response()->json([
+            'status' => 'success',
+            'student_name' => $student->name, // Add student name
+            'student_id' => $student->student_id, // Assuming 'student_id' is the correct field
+            'gpa' => $student->gpa, // Assuming 'gpa' is the correct field
+            'level' => $student->level, // Assuming 'level' is the correct field
+            'total_number_of_hours' => $student->total_credit_hours ?? 0, // Assuming this field exists
+            'current_semester' => $registeredCourses->first()->semester->description ?? null, // Get semester from the first registered course
+            'total_registered_hours' => $totalRegisteredHours,
+            'total_numberof_hours' => $totalnumberofHours,
+            'courses' => $formattedCourses,
+        ], 200);
+    }
+
+
+    public function confirmRegistration(int $studentId, Request $request): JsonResponse
+    {
+        $student = StudentData::findOrFail($studentId);
+        $action = $request->input('action'); // Get the action from the request ('confirm' or 'not_confirm')
+
+        if ($action === 'confirm') {
+            $registeredCourses = $student->registeredCourses()->get(); // Get the registered courses
+
+            foreach ($registeredCourses as $course) {
+                $registration = CourseRegistration::where('student_id', $studentId)
+                    ->where('course_id', $course->id)
+                    ->where('semester_id', $course->pivot->semester_id)
+                    ->first();
+                if ($registration) {
+                    $registration->status = 'confirmed';
+                    $registration->save();
+                }
+            }
+            return response()->json(['success' => true, 'message' => 'Registration confirmed.'], 200);
+        } elseif ($action === 'not_confirm') {
+            return response()->json(['success' => false, 'message' => 'Registration not confirmed.'], 200);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Invalid action.'], 400);
+        }
+    }
 }
+
