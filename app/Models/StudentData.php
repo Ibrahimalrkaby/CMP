@@ -21,7 +21,10 @@ class StudentData extends Model
         'personal_id',
         'guardian_id',
         'academic_year',
-        'program_id'
+        'program_id',
+        'gpa',
+        'level',
+        'total_credit_hours',
     ];
 
     // Relationship to PersonalData (StudentData BELONGS TO PersonalData)
@@ -83,12 +86,10 @@ class StudentData extends Model
 
     }
 
-<<<<<<< HEAD
-=======
+
     public function attendance()
     {
         return $this->belongsTo(Attendance::class);
     }
->>>>>>> origin/main
 }
 

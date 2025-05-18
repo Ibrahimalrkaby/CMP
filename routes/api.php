@@ -75,7 +75,7 @@ Route::controller(TeacherAuthController::class)->name('teacher.')->prefix('teach
 });
 
 // student data routes
-Route::controller(StudentController::class)->prefix('admin')->name('students.')->middleware('admin')->group(function () {
+Route::controller(StudentController::class)->prefix('students')->name('students.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('{id}', 'show')->name('show');
     Route::post('/', 'store')->name('store');
@@ -94,15 +94,24 @@ Route::prefix('admin')->name('admin.')->controller(AdminController::class)->grou
     });
 
 
-<<<<<<< HEAD
+// // teacher data routes
+// Route::controller(TeacherController::class)->prefix('teachers')->name('teachers.')->group(function () {
+//         Route::get('/', 'index')->name('index');              
+//         Route::get('{id}', 'show')->name('show');              
+//         Route::post('/', 'store')->name('store');             
+//         Route::put('{id}', 'update')->name('update');          
+//         Route::delete('{id}', 'destroy')->name('destroy');    
+//     });
+
 // teacher data routes
-Route::controller(TeacherController::class)->prefix('teachers')->name('teachers.')->group(function () {
+Route::controller(TeacherController::class)->prefix('teachers')->name('teachers.')->middleware('auth:teacher_api')->group(function () {
         Route::get('/', 'index')->name('index');              
         Route::get('{id}', 'show')->name('show');              
-        Route::post('/', 'store')->name('store');             
-        Route::put('{id}', 'update')->name('update');          
-        Route::delete('{id}', 'destroy')->name('destroy');    
+        Route::post('/', 'store')->name('store'); 
+        Route::put('/{id}', 'update')->name('update'); 
+        Route::delete('/{id}', 'destroy')->name('destroy');    
     });
+
     
 
 // program data routes
@@ -193,8 +202,6 @@ Route::get('/teacher/{teacher_id}/exam-schedule', [ExamScheduleController::class
 Route::get('semesters/{semester_id}/students/results', [StudentDataController::class, 'getStudentCourseResults'])->name('student.results');
 
 
-=======
->>>>>>> origin/main
 //Admin Auth Route
 Route::controller(AdminAuthController::class)->name('admins.')->prefix('admins')->group(function () {
     Route::post('register', 'register')->name('register');
@@ -223,7 +230,16 @@ Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group
     Route::get('/', 'show')->name('show');
     Route::post('/', 'store')->name('store');
 });
-<<<<<<< HEAD
+
+
+//  API for getRegisteredCourses 
+
+Route::get('/students/{student}/registered-courses', [CourseRegistrationController::class, 'getRegisteredCourses']);
+
+// API for confirmRegistration
+
+Route::get('/students/{student}/registered-courses', [CourseRegistrationController::class, 'getRegisteredCourses']);
+Route::patch('/students/{student}/confirm-registration', [CourseRegistrationController::class, 'confirmRegistration']);
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -231,20 +247,6 @@ Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group
 // });
 
 
-
-
-//  API for getRegisteredCourses 
-
-Route::apiResource('students', StudentDataController::class);
-Route::get('/students/{student}/registered-courses', [StudentDataController::class, 'getRegisteredCourses']);
-
-// API for confirmRegistration
-
-Route::apiResource('students', StudentDataController::class);
-Route::get('/students/{student}/registered-courses', [StudentDataController::class, 'getRegisteredCourses']);
-Route::patch('/students/{student}/confirm-registration', [StudentDataController::class, 'confirmRegistration']);
-
-=======
 
 
 
@@ -269,4 +271,3 @@ Route::controller(LectureController::class)->group(function () {
     Route::put('/lectures/{lecture}/attendance', 'updateAttendance');
     Route::get('/lectures/{lecture}/attendance', 'getAttendance');
 });
->>>>>>> origin/main

@@ -19,8 +19,7 @@ return new class extends Migration
             $table->string('rank');
 
             $table->foreignId('program_id')->nullable()->constrained('programs')->nullOnDelete();
-            $table->unsignedBigInteger('teacher_id');
-            $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('cascade');
+            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade');
 
             $table->timestamps();
         });

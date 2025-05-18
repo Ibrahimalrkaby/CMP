@@ -47,6 +47,9 @@ class StudentController extends Controller
             'student_program_id' => 'nullable|exists:programs,id',
             'age' => 'required|integer',
             'gender' => 'required|string|in:Male,Female',
+            'gpa' => 'nullable|numeric|between:0,4',
+            'level' => 'nullable|integer|min:1',
+            'total_credit_hours' => 'nullable|integer|min:0',
         ]);
 
         // Create or find the guardian
@@ -76,6 +79,9 @@ class StudentController extends Controller
             'guardian_id' => $guardian->national_id,
             'supervisor_id' => $validated['student_supervisor_id'] ?? null,
             'program_id' => $validated['student_program_id'] ?? null,
+            'gpa' => $validated['gpa'] ?? null,
+            'level' => $validated['level'] ?? null,
+            'total_credit_hours' => $validated['total_credit_hours'] ?? 0,
         ]);
 
         return response()->json([

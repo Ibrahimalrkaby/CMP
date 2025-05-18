@@ -108,7 +108,7 @@ Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group
 // Route::get('/lectures/{lecture}/attendance', [AttendanceController::class, 'getAttendance'])
 //     ->name('attendance.show');
 
-Route::group(function () {
+// Route::group(function () {
 //     Route::post('/lectures', [LectureController::class, 'store']);
 //     Route::put('/lectures/{lecture}/attendance', [LectureController::class, 'updateAttendance']);
 //     Route::get('/lectures/{lecture}/attendance', [LectureController::class, 'getAttendance']);

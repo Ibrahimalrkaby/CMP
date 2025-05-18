@@ -40,16 +40,14 @@ class TeacherData extends Model
         return $this->hasMany(Chat::class);
     }
 
-<<<<<<< HEAD
-=======
     public function teacher()
     {
-        return $this->belongsTo(Teacher::class);
+        return $this->belongsTo(Teacher::class , 'teacher_id');
     }
 
     public function lecture()
     {
         return $this->hasMany(Lecture::class);
     }
->>>>>>> origin/main
+
 }

@@ -32,12 +32,12 @@ class Course extends Model
      */
     public function student()
     {
-<<<<<<< HEAD
+
         return $this->belongsToMany(StudentData::class, 'course_student')
                     ->withPivot('grade');
-=======
+
         return $this->belongsTo(StudentData::class, 'student_id', 'student_id');
->>>>>>> origin/main
+
     }
 
     /**
@@ -75,11 +75,10 @@ class Course extends Model
         return $this->hasMany(Chat::class);
     }
 
-<<<<<<< HEAD
-=======
+
     public function lectures()
     {
         return $this->hasMany(Lecture::class);
     }
->>>>>>> origin/main
+
 }
