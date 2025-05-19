@@ -14,7 +14,7 @@ class StudentData extends Model
     protected $table = 'students_data';
 
     protected $fillable = [
-        'name',
+        'full_name',
         'email',
         'phone',
         'department',

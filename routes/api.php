@@ -94,25 +94,14 @@ Route::prefix('admin')->name('admin.')->controller(AdminController::class)->grou
     });
 
 
-// // teacher data routes
-// Route::controller(TeacherController::class)->prefix('teachers')->name('teachers.')->group(function () {
-//         Route::get('/', 'index')->name('index');              
-//         Route::get('{id}', 'show')->name('show');              
-//         Route::post('/', 'store')->name('store');             
-//         Route::put('{id}', 'update')->name('update');          
-//         Route::delete('{id}', 'destroy')->name('destroy');    
-//     });
-
 // teacher data routes
-Route::controller(TeacherController::class)->prefix('teachers')->name('teachers.')->middleware('auth:teacher_api')->group(function () {
+Route::controller(TeacherController::class)->prefix('teachers')->name('teachers.')->group(function () {
         Route::get('/', 'index')->name('index');              
         Route::get('{id}', 'show')->name('show');              
-        Route::post('/', 'store')->name('store'); 
-        Route::put('/{id}', 'update')->name('update'); 
-        Route::delete('/{id}', 'destroy')->name('destroy');    
+        Route::post('/', 'store')->name('store');             
+        Route::put('{id}', 'update')->name('update');          
+        Route::delete('{id}', 'destroy')->name('destroy');    
     });
-
-    
 
 // program data routes
 Route::controller(ProgramController::class)->prefix('programs')->name('programs.')->group(function () {

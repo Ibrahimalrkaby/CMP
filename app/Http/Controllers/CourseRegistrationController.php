@@ -168,14 +168,7 @@ class CourseRegistrationController extends Controller
     }
 
  // ( registered course section ) in (doctor):
- /**
-     * Get registered courses for a student with details, calculations, and student name search.
-     *
-     * @param int $studentId The ID of the student.
-     * @param Request $request The HTTP request, potentially containing a search term.
-     * @return JsonResponse Returns a JSON response containing registered courses,
-     * total registered hours, and total completed hours.
-     */
+
     public function getRegisteredCourses(int $studentId, Request $request): JsonResponse
     {
         // Find the student or return 404 if not found

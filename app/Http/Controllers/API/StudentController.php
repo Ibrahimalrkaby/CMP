@@ -38,7 +38,7 @@ class StudentController extends Controller
             'guardian_city' => 'required',
 
             // Student fields
-            'student_name' => 'required|string|max:255',
+            'student_full_name' => 'required|string|max:255',
             'student_email' => 'required|email|unique:students_data,email',
             'student_phone' => 'required',
             'student_department' => 'required|string|max:255',
@@ -71,7 +71,7 @@ class StudentController extends Controller
 
         // Create student
         $student = StudentData::create([
-            'name' => $validated['student_name'],
+            'full_name' => $validated['student_full_name'],
             'email' => $validated['student_email'],
             'phone' => $validated['student_phone'],
             'department' => $validated['student_department'],
@@ -102,7 +102,7 @@ class StudentController extends Controller
         }
 
         $request->validate([
-            'name' => 'sometimes|string|max:255',
+            'full_name' => 'sometimes|string|max:255',
             'email' => 'sometimes|email|unique:students_data,email,' . $student->id,
             'phone' => 'sometimes|string|max:20',
             'department' => 'sometimes|string|max:255',
@@ -110,7 +110,7 @@ class StudentController extends Controller
         ]);
 
         $updatedData = $request->only([
-            'name',
+            'full_name',
             'email',
             'phone',
             'department',

@@ -18,6 +18,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -70,6 +75,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -106,8 +116,8 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{student_token}}",
+								"key": "Accept",
+								"value": "application/json",
 								"type": "text"
 							}
 						],
@@ -145,8 +155,8 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{student_token}}",
+								"key": "Accept",
+								"value": "application/json",
 								"type": "text"
 							}
 						],
@@ -177,8 +187,8 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{student_token}}",
+								"key": "Accept",
+								"value": "application/json",
 								"type": "text"
 							}
 						],
@@ -210,6 +220,11 @@
 						"header": [
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
 							}
@@ -261,6 +276,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -294,8 +314,8 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
+								"key": "Accept",
+								"value": "application/json",
 								"type": "text"
 							}
 						],
@@ -330,8 +350,8 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
+								"key": "Accept",
+								"value": "application/json",
 								"type": "text"
 							}
 						],
@@ -362,8 +382,8 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
+								"key": "Accept",
+								"value": "application/json",
 								"type": "text"
 							}
 						],
@@ -395,6 +415,11 @@
 						"header": [
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
 							}
@@ -446,6 +471,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -479,8 +509,8 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{teacher_token}}",
+								"key": "Accept",
+								"value": "application/json",
 								"type": "text"
 							}
 						],
@@ -515,8 +545,8 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{teacher_token}}",
+								"key": "Accept",
+								"value": "application/json",
 								"type": "text"
 							}
 						],
@@ -547,8 +577,8 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{teacher_token}}",
+								"key": "Accept",
+								"value": "application/json",
 								"type": "text"
 							}
 						],
@@ -587,10 +617,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -651,10 +680,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -688,12 +716,6 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
-							},
-							{
 								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
@@ -701,7 +723,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"guardian_national_id\": \"12345678901234\",\r\n  \"guardian_email\": \"guardian@example.com\",\r\n  \"guardian_phone\": \"01111222333\",\r\n  \"guardian_city\": \"Cairo\",\r\n  \"student_name\": \"Ahmed Mohamed\",\r\n  \"student_email\": \"ahmed@example.com\",\r\n  \"student_phone\": \"01012345678\",\r\n  \"student_department\": \"Computer Science\",\r\n  \"student_personal_id\": \"98768532101234\",\r\n  \"student_supervisor_id\": 1,\r\n  \"student_program_id\": 1,\r\n  \"age\": 21,\r\n  \"gender\": \"Male\",\r\n  \"gpa\": 3.75,\r\n  \"level\": 3,\r\n  \"total_credit_hours\": 75\r\n}\r\n"
+							"raw": "{\r\n  \"guardian_national_id\": \"12345678901234\",\r\n  \"guardian_email\": \"guardian@example.com\",\r\n  \"guardian_phone\": \"01111222333\",\r\n  \"guardian_city\": \"Cairo\",\r\n  \"student_full_name\": \"Ahmed Mohamed\",\r\n  \"student_email\": \"ahmed@example.com\",\r\n  \"student_phone\": \"01012345678\",\r\n  \"student_department\": \"Computer Science\",\r\n  \"student_personal_id\": \"18768582101231\",\r\n  \"student_supervisor_id\": 1,\r\n  \"student_program_id\": 1,\r\n  \"age\": 21,\r\n  \"gender\": \"Male\",\r\n  \"gpa\": 3.75,\r\n  \"level\": 3,\r\n  \"total_credit_hours\": 75\r\n}\r\n"
 						},
 						"url": {
 							"raw": "http://localhost:8000/api/students",
@@ -729,10 +751,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -771,10 +792,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -810,12 +830,6 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
 							},
 							{
 								"key": "Accept",
@@ -881,10 +895,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -916,12 +929,6 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
 							},
 							{
 								"key": "Accept",
@@ -959,10 +966,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -1001,10 +1007,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -1040,12 +1045,6 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
 							},
 							{
 								"key": "Accept",
@@ -1111,10 +1110,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -1148,11 +1146,6 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{teacher_token}}",
-								"type": "text"
-							},
-							{
 								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
@@ -1160,7 +1153,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"phone\": \"01123456789\",\r\n  \"department\": \"Computer Science\",\r\n  \"personal_id\": \"12345678901234\",\r\n  \"rank\": \"Assistant Professor\",\r\n  \"role\": \"doctor\",\r\n  \"program_id\": 1\r\n}\r\n"
+							"raw": "{\r\n  \"name\" : \"ahmed\",\r\n  \"email\" : \"ahmed@gmail.com\",\r\n  \"phone\": \"01123456789\",\r\n  \"department\": \"Computer Science\",\r\n  \"personal_id\": \"12345678901234\",\r\n  \"rank\": \"Assistant Professor\",\r\n  \"role\": \"doctor\",\r\n  \"program_id\": 1\r\n}\r\n"
 						},
 						"url": {
 							"raw": "http://localhost:8000/api/teachers",
@@ -1188,10 +1181,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -1230,10 +1222,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -1261,7 +1252,18 @@
 					"name": "List All Programs",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8000/api/programs",
 							"protocol": "http",
@@ -1281,7 +1283,18 @@
 					"name": "Show a Single Program",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8000/api/programs/1",
 							"protocol": "http",
@@ -1302,7 +1315,18 @@
 					"name": "Create a new program",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"name\": \"IS\",\r\n  \"description\": \"Information System\"\r\n}\r\n",
@@ -1331,7 +1355,18 @@
 					"name": "Update a Program",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"description\": \"Computer Scince\"\r\n}\r\n",
@@ -1361,7 +1396,18 @@
 					"name": "Delete a Program",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -1396,7 +1442,18 @@
 					"name": "List All Semesters",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8000/api/semesters",
 							"protocol": "http",
@@ -1416,7 +1473,18 @@
 					"name": "Show a Single semester",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8000/api/semesters/1",
 							"protocol": "http",
@@ -1437,7 +1505,18 @@
 					"name": "Create a new semester",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"start_date\": \"2025-09-01\",\r\n  \"end_date\": \"2026-01-15\",\r\n  \"description\": \"First semester of 2025\"\r\n}\r\n",
@@ -1466,7 +1545,18 @@
 					"name": "Update a semester",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"start_date\": \"2025-09-10\"\r\n}\r\n",
@@ -1496,7 +1586,18 @@
 					"name": "Delete a semester",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -1571,7 +1672,18 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"course_ids\": [1, 2, 3]\r\n}\r\n"
@@ -1602,7 +1714,18 @@
 					"name": "Get All Courses",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8000/api/courses",
 							"protocol": "http",
@@ -1622,9 +1745,20 @@
 					"name": "Show a Single course",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8000/api/courses/1",
+							"raw": "http://localhost:8000/api/courses/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1633,7 +1767,7 @@
 							"path": [
 								"api",
 								"courses",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -1643,10 +1777,21 @@
 					"name": "Create a new course",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Data Structures\",\r\n  \"description\": \"stacks, queues, trees, graphs\",\r\n  \"department\": \"Computer Science\",\r\n  \"level\": \"Level 2\",\r\n  \"credit_hours\": 3\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Operating Systems\",\r\n  \"description\": \"Study of OS principles\",\r\n  \"department\": \"Computer Science\",\r\n  \"level\": \"3\",\r\n  \"credit_hours\": 3,\r\n  \"teacher_id\": 1,\r\n  \"schedules\": [\r\n    {\r\n      \"day\": \"Sunday\",\r\n      \"start_time\": \"10:00\",\r\n      \"end_time\": \"12:00\",\r\n      \"location\": \"Room 204\",\r\n      \"type\": \"lecture\"\r\n    },\r\n    {\r\n      \"day\": \"Wednesday\",\r\n      \"start_time\": \"10:00\",\r\n      \"end_time\": \"12:00\",\r\n      \"location\": \"Room 204\",\r\n      \"type\": \"lab\"\r\n    }\r\n  ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1672,7 +1817,18 @@
 					"name": "Update a course",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"description\": \"stacks\"\r\n}\r\n",
@@ -1683,7 +1839,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/api/courses/4",
+							"raw": "http://localhost:8000/api/courses/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1692,7 +1848,7 @@
 							"path": [
 								"api",
 								"courses",
-								"4"
+								"1"
 							]
 						}
 					},
@@ -1702,7 +1858,18 @@
 					"name": "Delete a course",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -1747,12 +1914,6 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "",
-								"type": "text",
-								"disabled": true
 							}
 						],
 						"body": {
@@ -1792,7 +1953,18 @@
 					"name": "Store Course in Semester",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"course_id\": 1,\r\n  \"semester_id\": 1\r\n}\r\n",
@@ -1830,11 +2002,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{student_token}}",
 								"type": "text"
 							},
 							{
@@ -1879,6 +2046,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -1916,12 +2088,6 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{teacher_token}}",
-								"type": "text",
-								"disabled": true
 							},
 							{
 								"key": "Accept",
@@ -1969,10 +2135,9 @@
 								"type": "text"
 							},
 							{
-								"key": "",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -2015,10 +2180,9 @@
 								"type": "text"
 							},
 							{
-								"key": "",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -2056,10 +2220,9 @@
 								"type": "text"
 							},
 							{
-								"key": "",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -2103,10 +2266,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -2143,6 +2305,11 @@
 						"header": [
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
 							}
@@ -2183,10 +2350,9 @@
 								"type": "text"
 							},
 							{
-								"key": "",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -2232,10 +2398,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{student_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -2248,7 +2413,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/api/student/2/schedules",
+							"raw": "http://localhost:8000/api/student/1/schedules",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2257,7 +2422,7 @@
 							"path": [
 								"api",
 								"student",
-								"2",
+								"1",
 								"schedules"
 							]
 						}
@@ -2276,12 +2441,6 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{student_token}}",
-								"type": "text",
-								"disabled": true
 							},
 							{
 								"key": "Accept",
@@ -2332,6 +2491,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -2374,8 +2538,8 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{teacher_token}}",
+								"key": "Accept",
+								"value": "application/json",
 								"type": "text"
 							}
 						],
@@ -2424,8 +2588,8 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{student_token}}",
+								"key": "Accept",
+								"value": "application/json",
 								"type": "text"
 							}
 						],
@@ -2472,16 +2636,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{teacher_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -2518,6 +2675,11 @@
 						"header": [
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
 							}
@@ -2562,8 +2724,8 @@
 								"type": "text"
 							},
 							{
-								"key": "",
-								"value": "",
+								"key": "Accept",
+								"value": "application/json",
 								"type": "text",
 								"disabled": true
 							}
@@ -2605,10 +2767,9 @@
 								"type": "text"
 							},
 							{
-								"key": "",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -2652,10 +2813,9 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -2692,6 +2852,11 @@
 						"header": [
 							{
 								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
 							}
@@ -2734,10 +2899,9 @@
 								"type": "text"
 							},
 							{
-								"key": "",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -2776,10 +2940,9 @@
 								"type": "text"
 							},
 							{
-								"key": "",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -2821,12 +2984,6 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{student_token}}",
-								"type": "text",
-								"disabled": true
 							},
 							{
 								"key": "Accept",
@@ -2888,8 +3045,8 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{admin_token}}",
+								"key": "Accept",
+								"value": "application/json",
 								"type": "text"
 							}
 						],
