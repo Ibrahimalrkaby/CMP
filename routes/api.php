@@ -138,7 +138,14 @@ Route::controller(CourseController::class)->prefix('courses')->name('courses.')-
 Route::put('course/{courseId}/student/{studentId}/grade', [CourseStudentController::class, 'storeOrUpdateGrade'])->name('course.student.grade');
 
 // store course semester
-Route::post('course-semester', [CourseSemesterController::class, 'store'])->name('course.semester.store');
+Route::controller(CourseSemesterController::class)->prefix('course-semesters')->name('courseSemesters.')->group(function () {
+    Route::get('/', 'index')->name('index');              
+    Route::get('{course_id}/{semester_id}', 'show')->name('show');             
+    Route::post('/', 'store')->name('store');             
+    Route::put('{course_id}/{semester_id}', 'update')->name('update');         
+    Route::delete('{course_id}/{semester_id}', 'destroy')->name('destroy');   
+});
+
 
 // course registration routes
 Route::prefix('registration')->controller(CourseRegistrationController::class)->name('registration.')->group(function () {
@@ -183,9 +190,17 @@ Route::prefix('fees')->name('fees.')->controller(FeeController::class)->group(fu
 Route::get('/student/{student_id}/schedules', [CourseScheduleController::class, 'index']);
 Route::get('/teacher/{teacher_id}/schedules', [CourseScheduleController::class, 'teacherSchedule']);
 
+
 // course exam routes
-Route::get('/student/{student_id}/exam-schedule', [ExamScheduleController::class, 'studentExamSchedule']);
-Route::get('/teacher/{teacher_id}/exam-schedule', [ExamScheduleController::class, 'teacherExamSchedule']);
+Route::controller(ExamScheduleController::class)->prefix('exam-schedules')->name('exam-schedules.')->group(function () {
+    Route::get('/', 'index')->name('index');               
+    Route::post('/', 'store')->name('store');              
+    Route::put('{id}', 'update')->name('update');        
+    Route::delete('{id}', 'destroy')->name('destroy');     
+
+    Route::get('student/{student_id}', 'studentExamSchedule')->name('student.schedule'); 
+    Route::get('teacher/{teacher_id}', 'teacherExamSchedule')->name('teacher.schedule');  
+});
 
 // studenr result (doctor)
 Route::get('semesters/{semester_id}/students/results', [StudentDataController::class, 'getStudentCourseResults'])->name('student.results');
@@ -221,14 +236,11 @@ Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group
 });
 
 
-//  API for getRegisteredCourses 
-
+//  API for getRegisteredCourses (doctor)
 Route::get('/students/{student}/registered-courses', [CourseRegistrationController::class, 'getRegisteredCourses']);
 
-// API for confirmRegistration
-
-Route::get('/students/{student}/registered-courses', [CourseRegistrationController::class, 'getRegisteredCourses']);
-Route::patch('/students/{student}/confirm-registration', [CourseRegistrationController::class, 'confirmRegistration']);
+// API for confirmRegistration(doctor)
+Route::put('/students/{student}/confirm-registration', [CourseRegistrationController::class, 'confirmRegistration']);
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

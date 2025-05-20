@@ -11,14 +11,13 @@ class TeacherData extends Model
     use HasFactory;
     protected $table = 'teacher_data';
     protected $fillable = [
-        'name',
-        'email',
         'phone',
         'department',
         'personal_id',
         'rank',
         'program_id',
         'role',
+        'teacher_id',
     ];
 
     // One teacher has many students
@@ -49,5 +48,11 @@ class TeacherData extends Model
     {
         return $this->hasMany(Lecture::class);
     }
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class, 'teacher_id', 'national_id');
+    }
+
 
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\GuardianStudent;
 use App\Models\PersonalData;
 use App\Models\StudentData;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -28,20 +29,19 @@ class StudentController extends Controller
     }
 
     // Create new student
+
     public function store(Request $request)
     {
         $validated = $request->validate([
-            // Guardian fields
+            
             'guardian_national_id' => 'required|digits:14',
             'guardian_email' => 'required|email',
             'guardian_phone' => 'required',
             'guardian_city' => 'required',
 
-            // Student fields
-            'student_full_name' => 'required|string|max:255',
-            'student_email' => 'required|email|unique:students_data,email',
             'student_phone' => 'required',
             'student_department' => 'required|string|max:255',
+            'student_id' => 'required|exists:users,id', 
             'student_personal_id' => 'required|unique:students_personal_date,national_id',
             'student_supervisor_id' => 'nullable|exists:teacher_data,id',
             'student_program_id' => 'nullable|exists:programs,id',
@@ -52,7 +52,11 @@ class StudentController extends Controller
             'total_credit_hours' => 'nullable|integer|min:0',
         ]);
 
-        // Create or find the guardian
+        $user = User::find($validated['student_id']);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
         $guardian = GuardianStudent::firstOrCreate(
             ['national_id' => $validated['guardian_national_id']],
             [
@@ -62,17 +66,16 @@ class StudentController extends Controller
             ]
         );
 
-        // Create personal data
         $personalData = PersonalData::create([
             'national_id' => $validated['student_personal_id'],
             'age' => $validated['age'],
             'gender' => $validated['gender'],
         ]);
 
-        // Create student
         $student = StudentData::create([
-            'full_name' => $validated['student_full_name'],
-            'email' => $validated['student_email'],
+            'student_id' => $validated['student_id'],
+            'full_name' => $user->name,             
+            'email' => $user->email,        
             'phone' => $validated['student_phone'],
             'department' => $validated['student_department'],
             'personal_id' => $personalData->id,
@@ -102,28 +105,29 @@ class StudentController extends Controller
         }
 
         $request->validate([
-            'full_name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:students_data,email,' . $student->id,
             'phone' => 'sometimes|string|max:20',
             'department' => 'sometimes|string|max:255',
             'guardian_id' => 'sometimes|exists:students_guardian,national_id',
         ]);
 
-        $updatedData = $request->only([
-            'full_name',
-            'email',
+        $student->update($request->only([
             'phone',
             'department',
             'guardian_id',
-        ]);
+        ]));
 
-        $student->update($updatedData);
+        if ($student->user) {
+            $student->full_name = $student->user->name;
+            $student->email = $student->user->email;
+            $student->save();
+        }
 
         return response()->json([
             'message' => 'Student updated successfully',
             'student' => $student
         ]);
     }
+
 
     // Delete student
     public function destroy($id)

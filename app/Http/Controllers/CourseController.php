@@ -35,7 +35,7 @@ class CourseController extends Controller
         if ($request->has('schedules')) {
             foreach ($request->schedules as $schedule) {
                 $course->schedules()->create([
-                    'teacher_id' => $request->teacher_id, // or $schedule['teacher_id'] if dynamic
+                    'teacher_id' => $request->teacher_id,
                     'day' => $schedule['day'],
                     'start_time' => $schedule['start_time'],
                     'end_time' => $schedule['end_time'],

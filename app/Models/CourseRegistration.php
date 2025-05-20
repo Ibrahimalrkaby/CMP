@@ -15,7 +15,7 @@ class CourseRegistration extends Model
 
     public function student()
     {
-        return $this->belongsTo(StudentData::class);
+        return $this->belongsTo(StudentData::class , 'student_id');
     }
 
     public function course()

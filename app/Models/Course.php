@@ -60,7 +60,7 @@ class Course extends Model
      */
     public function examSchedules()
     {
-        return $this->hasMany(ExamSchedule::class);
+        return $this->hasMany(ExamSchedule::class , 'course_id');
     }
 
     public function teacher()

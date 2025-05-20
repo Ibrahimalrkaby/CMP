@@ -21,13 +21,13 @@ class SemesterController extends Controller
     // add new semester
     public function store(Request $request) {
         $validated = $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+            'start_date' => 'required|date|unique:semesters,start_date',
+            'end_date' => 'required|date|after:start_date|unique:semesters,end_date',
             'description' => 'nullable|string|max:255',
         ]);
 
         $semester = Semester::create($validated);
-        return response()->json($semester, 201);  // 201 تعني تم الإنشاء بنجاح
+        return response()->json($semester, 201); 
     }
 
     // update semester

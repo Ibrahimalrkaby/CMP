@@ -14,6 +14,7 @@ class StudentData extends Model
     protected $table = 'students_data';
 
     protected $fillable = [
+        'student_id',
         'full_name',
         'email',
         'phone',
@@ -82,9 +83,9 @@ class StudentData extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
-
+        return $this->belongsTo(User::class, 'student_id', 'id');
     }
+
 
 
     public function attendance()
