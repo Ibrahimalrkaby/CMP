@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\CourseSchedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Log;
 
 class CourseController extends Controller
 {
-    //create course
+
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -28,6 +32,7 @@ class CourseController extends Controller
             'schedules.*.type' => 'required_with:schedules|string',
         ]);
 
+<<<<<<< HEAD
         // Create course
         $course = Course::create($validated);
 
@@ -48,36 +53,99 @@ class CourseController extends Controller
         return response()->json([
             'message' => 'Course and its schedule created successfully',
             'course' => $course->load('schedules')
+=======
+        // Create the course
+        $course = Course::create($validated);
+
+        if (!$course) {
+            return response()->json(['error' => 'Failed to create course'], 500);
+        }
+
+        // Dynamic table name
+        $gradesTable = 'grades_course_' . $course->id;
+
+        // Log the action
+        Log::info("Attempting to create table: $gradesTable");
+
+        // Create grade table if it doesn't exist
+        if (!Schema::hasTable($gradesTable)) {
+            try {
+                Schema::create($gradesTable, function (Blueprint $table) {
+                    $table->id();
+                    $table->unsignedBigInteger('student_id');
+                    // You can temporarily comment this line if students_data table doesn't exist:
+                    // $table->foreign('student_id')->references('id')->on('students_data')->onDelete('cascade');
+                    $table->decimal('midterm_exam', 5, 2)->nullable();
+                    $table->decimal('practical_exam', 5, 2)->nullable();
+                    $table->decimal('oral_exam', 5, 2)->nullable();
+                    $table->decimal('year_work', 5, 2)->nullable();
+                    $table->decimal('final_grade', 5, 2)->nullable();
+                    $table->decimal('total', 5, 2)->nullable();
+                    $table->decimal('course_grade', 5, 2)->nullable();
+                    $table->timestamps();
+                    $table->unique(['student_id']);
+                });
+                Log::info("Table $gradesTable created successfully.");
+            } catch (\Exception $e) {
+                Log::error("Failed to create table $gradesTable: " . $e->getMessage());
+                return response()->json(['error' => 'Course created but table creation failed.'], 500);
+            }
+        } else {
+            Log::info("Table $gradesTable already exists.");
+        }
+
+        return response()->json([
+            'message' => 'Course created and grade table generated successfully.',
+            'course' => $course
+>>>>>>> da85b30997a9f549c26d237af080612837864fda
         ], 201);
     }
 
 
+<<<<<<< HEAD
     // get all courses
+=======
+    // Get all courses
+>>>>>>> da85b30997a9f549c26d237af080612837864fda
     public function index()
     {
         $courses = Course::with('schedules')->get();
         return response()->json($courses);
     }
 
-    // get course by id
+    // Get course by ID
     public function show($id)
     {
         $course = Course::with('schedules')->findOrFail($id);
         return response()->json($course);
     }
 
+<<<<<<< HEAD
 
     // update course
+=======
+    // Update course
+>>>>>>> da85b30997a9f549c26d237af080612837864fda
     public function update(Request $request, $id)
     {
-        $course = Course::findOrFail($id);
+        $course = Course::find($id);
 
+        if (!$course) {
+            return response()->json([
+                'message' => 'Course not found.'
+            ], 404);
+        }
+
+        // Log the incoming request data
+        Log::info('Incoming course update request:', $request->all());
+
+        // Validate request
         $validated = $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'description' => 'sometimes|string',
-            'department' => 'sometimes|string',
-            'level' => 'sometimes|string',
-            'credit_hours' => 'sometimes|integer',
+            'name' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|required|string',
+            'department' => 'sometimes|required|string',
+            'level' => 'sometimes|required|string',
+            'credit_hours' => 'sometimes|required|integer',
             'teacher_id' => 'nullable|exists:teacher_data,id',
 
             // validation for optional schedule update
@@ -90,6 +158,10 @@ class CourseController extends Controller
             'schedules.*.type' => 'required_with:schedules|string',
         ]);
 
+        // Log validated data
+        Log::info('Validated update data:', $validated);
+
+        // Update course
         $course->update($validated);
 
         // Update schedules if provided
@@ -129,6 +201,7 @@ class CourseController extends Controller
     }
 
 
+<<<<<<< HEAD
     // delete course
     public function destroy($id)
     {
@@ -142,6 +215,24 @@ class CourseController extends Controller
 
         return response()->json([
             'message' => 'Course and its schedules deleted successfully'
+=======
+    // Delete course
+    public function destroy($id)
+    {
+        $course = Course::findOrFail($id);
+        $gradesTable = 'grades_course_' . $course->id;
+
+        // Drop the dynamic grades table if it exists
+        if (Schema::hasTable($gradesTable)) {
+            Schema::drop($gradesTable);
+        }
+
+        // Delete the course
+        $course->delete();
+
+        return response()->json([
+            'message' => 'Course and its grade table deleted successfully.'
+>>>>>>> da85b30997a9f549c26d237af080612837864fda
         ]);
     }
 

@@ -33,11 +33,15 @@ class Course extends Model
     public function student()
     {
 
+<<<<<<< HEAD
         return $this->belongsToMany(StudentData::class, 'course_student')
                     ->withPivot('grade');
 
         return $this->belongsTo(StudentData::class, 'student_id', 'student_id');
 
+=======
+        return $this->belongsTo(StudentData::class, 'student_id', 'student_id');
+>>>>>>> da85b30997a9f549c26d237af080612837864fda
     }
 
     /**
@@ -48,12 +52,12 @@ class Course extends Model
         return $this->hasMany(CourseSchedule::class);
     }
 
-     /**
+    /**
      * Courses that are prerequisites for this course.
      */
     public function prerequisites(): BelongsToMany
     {
-        return $this->belongsToMany(Course::class,'course_prerequisites','course_id','prerequisite_course_id');
+        return $this->belongsToMany(Course::class, 'course_prerequisites', 'course_id', 'prerequisite_course_id');
     }
     /**
      * The schedule exam for the course
@@ -81,4 +85,11 @@ class Course extends Model
         return $this->hasMany(Lecture::class);
     }
 
+<<<<<<< HEAD
+=======
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+>>>>>>> da85b30997a9f549c26d237af080612837864fda
 }

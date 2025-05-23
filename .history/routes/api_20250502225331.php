@@ -92,7 +92,15 @@ Route::controller(TeacherAuthController::class)->name('teacher.')->prefix('teach
 //Chat Route
 Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group(function () {
     Route::get('/', 'show')->name('show');
+<<<<<<< HEAD
     Route::post('/', 'store')->name('store');
+=======
+<<<<<<<< HEAD:.history/routes/api_20250502173056.php
+    Route::post('/', 'store')->name('store');
+========
+    Route::post('/', 'store')->name('store')
+>>>>>>>> da85b30997a9f549c26d237af080612837864fda:.history/routes/api_20250502225331.php
+>>>>>>> da85b30997a9f549c26d237af080612837864fda
 });
 
 
