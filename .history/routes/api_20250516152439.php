@@ -82,7 +82,7 @@ Route::controller(StudentController::class)->prefix('admin')->name('students.')-
     Route::delete('{id}', 'destroy')->name('destroy');
 });
 
-<<<<<<< HEAD
+
 //Admin Auth Route
 Route::controller(AdminAuthController::class)->name('admins.')->prefix('admins')->group(function () {
     Route::post('register', 'register')->name('register');
@@ -111,9 +111,9 @@ Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group
     Route::get('/', 'show')->name('show');
     Route::post('/', 'store')->name('store')->middleware('teacher');
 });
-=======
+
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
->>>>>>> 4b46ad5620c4fd88e444c1ab522910d87cc8d96f
+

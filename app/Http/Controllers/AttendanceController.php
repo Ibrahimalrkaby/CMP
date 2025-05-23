@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
+
 use App\Models\Course;
 use App\Models\Lecture;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class AttendanceController extends Controller
 {
@@ -54,13 +56,8 @@ class AttendanceController extends Controller
             'lecture' => $lecture,
             'attendance' => $attendance
         ]);
-=======
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
+    }
 
-class AttendanceController extends Controller
-{
     // Add attendance for a student
     public function store(Request $request, $lectureId)
     {
@@ -174,6 +171,7 @@ class AttendanceController extends Controller
         } else {
             return response()->json(['error' => 'Attendance not found.'], 404);
         }
->>>>>>> da85b30997a9f549c26d237af080612837864fda
+
     }
 }
+    

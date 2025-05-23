@@ -25,7 +25,5 @@ class ChatPermissionSeeder extends Seeder
         ->givePermissionTo('view-chat');
 
 }
-<<<<<<< HEAD
+
 }
-=======
->>>>>>> da85b30997a9f549c26d237af080612837864fda

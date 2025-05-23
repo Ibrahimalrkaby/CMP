@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
+
 use App\Models\Course;
 use App\Models\Lecture;
 use App\Models\Attendance;
@@ -132,16 +132,6 @@ class LectureController extends Controller
                 'error' => 'Server Error: ' . $e->getMessage()
             ], 500);
         }
-=======
-use App\Models\Lecture;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Log;
-
-class LectureController extends Controller
-{
-
 
     public function store(Request $request)
     {
@@ -268,6 +258,5 @@ class LectureController extends Controller
         return response()->json([
             'message' => 'Lecture and its grade table deleted successfully.'
         ]);
->>>>>>> da85b30997a9f549c26d237af080612837864fda
     }
 }

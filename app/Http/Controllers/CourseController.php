@@ -32,7 +32,7 @@ class CourseController extends Controller
             'schedules.*.type' => 'required_with:schedules|string',
         ]);
 
-<<<<<<< HEAD
+
         // Create course
         $course = Course::create($validated);
 
@@ -53,7 +53,7 @@ class CourseController extends Controller
         return response()->json([
             'message' => 'Course and its schedule created successfully',
             'course' => $course->load('schedules')
-=======
+        ]);
         // Create the course
         $course = Course::create($validated);
 
@@ -97,16 +97,14 @@ class CourseController extends Controller
         return response()->json([
             'message' => 'Course created and grade table generated successfully.',
             'course' => $course
->>>>>>> da85b30997a9f549c26d237af080612837864fda
+
         ], 201);
     }
 
 
-<<<<<<< HEAD
+
     // get all courses
-=======
-    // Get all courses
->>>>>>> da85b30997a9f549c26d237af080612837864fda
+
     public function index()
     {
         $courses = Course::with('schedules')->get();
@@ -120,12 +118,9 @@ class CourseController extends Controller
         return response()->json($course);
     }
 
-<<<<<<< HEAD
 
-    // update course
-=======
     // Update course
->>>>>>> da85b30997a9f549c26d237af080612837864fda
+
     public function update(Request $request, $id)
     {
         $course = Course::find($id);
@@ -201,21 +196,22 @@ class CourseController extends Controller
     }
 
 
-<<<<<<< HEAD
+
     // delete course
-    public function destroy($id)
-    {
-        $course = Course::findOrFail($id);
+    // public function destroy($id)
+    // {
+    //     $course = Course::findOrFail($id);
 
-        // delete related schedules first
-        $course->schedules()->delete();
+    //     // delete related schedules first
+    //     $course->schedules()->delete();
 
-        // delete the course
-        $course->delete();
+    //     // delete the course
+    //     $course->delete();
 
-        return response()->json([
-            'message' => 'Course and its schedules deleted successfully'
-=======
+    //     return response()->json([
+    //         'message' => 'Course and its schedules deleted successfully'
+    //     ]);
+    // }
     // Delete course
     public function destroy($id)
     {
@@ -232,7 +228,7 @@ class CourseController extends Controller
 
         return response()->json([
             'message' => 'Course and its grade table deleted successfully.'
->>>>>>> da85b30997a9f549c26d237af080612837864fda
+
         ]);
     }
 
