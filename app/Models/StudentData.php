@@ -75,7 +75,6 @@ class StudentData extends Model
     public function registeredCourses()
     {
         return $this->belongsToMany(Course::class, 'course_registrations', 'student_id', 'course_id')
-<<<<<<< HEAD
                     ->with(['schedules', 'teacher'])
                     ->withPivot('semester_id', 'status')
                     ->wherePivot('status', 'confirmed');
@@ -89,23 +88,18 @@ class StudentData extends Model
 
 
 
-    public function attendance()
-    {
-        return $this->belongsTo(Attendance::class);
-    }
-}
-=======
-            ->with(['schedules', 'teacher'])
-            ->withPivot('semester_id', 'status')
-            ->wherePivot('status', 'approved');
-    }
+    // public function attendance()
+    // {
+    //     return $this->belongsTo(Attendance::class);
+    // }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+            
 
->>>>>>> da85b30997a9f549c26d237af080612837864fda
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
+
 
     public function attendance()
     {

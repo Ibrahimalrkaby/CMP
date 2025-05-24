@@ -196,27 +196,14 @@ class CourseController extends Controller
     }
 
 
-
-    // delete course
-    // public function destroy($id)
-    // {
-    //     $course = Course::findOrFail($id);
-
-    //     // delete related schedules first
-    //     $course->schedules()->delete();
-
-    //     // delete the course
-    //     $course->delete();
-
-    //     return response()->json([
-    //         'message' => 'Course and its schedules deleted successfully'
-    //     ]);
-    // }
     // Delete course
     public function destroy($id)
     {
         $course = Course::findOrFail($id);
         $gradesTable = 'grades_course_' . $course->id;
+
+        // delete related schedules 
+        $course->schedules()->delete();
 
         // Drop the dynamic grades table if it exists
         if (Schema::hasTable($gradesTable)) {
@@ -227,7 +214,7 @@ class CourseController extends Controller
         $course->delete();
 
         return response()->json([
-            'message' => 'Course and its grade table deleted successfully.'
+            'message' => 'Course and its schedules its grade table deleted successfully.'
 
         ]);
     }

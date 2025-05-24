@@ -723,7 +723,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"guardian_national_id\": \"12345678901234\",\r\n  \"guardian_email\": \"guardian@example.com\",\r\n  \"guardian_phone\": \"0123456789\",\r\n  \"guardian_city\": \"Cairo\",\r\n  \r\n  \"student_id\": 2,\r\n  \"student_phone\": \"01122334455\",\r\n  \"student_department\": \"Computer Science\",\r\n  \"student_personal_id\": \"18865432101234\",\r\n  \"student_supervisor_id\": 1,\r\n  \"student_program_id\": 1,\r\n  \"age\": 20,\r\n  \"gender\": \"Male\",\r\n  \"gpa\": 3.5,\r\n  \"level\": 3,\r\n  \"total_credit_hours\": 75\r\n}\r\n"
+							"raw": "{\r\n  \"guardian_national_id\": \"12345678901234\",\r\n  \"guardian_email\": \"guardian@example.com\",\r\n  \"guardian_phone\": \"0123456789\",\r\n  \"guardian_city\": \"Cairo\",\r\n  \r\n  \"student_id\": 2,\r\n  \"student_phone\": \"01122334455\",\r\n  \"student_department\": \"Computer Science\",\r\n  \"student_personal_id\": \"1886432101234\",\r\n  \"student_supervisor_id\": 1,\r\n  \"student_program_id\": 1,\r\n  \"age\": 20,\r\n  \"gender\": \"Male\",\r\n  \"gpa\": 3.5,\r\n  \"level\": 3,\r\n  \"total_credit_hours\": 75\r\n}\r\n"
 						},
 						"url": {
 							"raw": "http://localhost:8000/api/students",
@@ -1153,7 +1153,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"phone\": \"01123456789\",\r\n  \"department\": \"Computer Science\",\r\n  \"personal_id\": \"12345688901234\",\r\n  \"rank\": \"Assistant Professor\",\r\n  \"role\": \"doctor\",\r\n  \"program_id\": 1,\r\n  \"teacher_id\":1\r\n}\r\n"
+							"raw": "{\r\n  \"phone\": \"01123456789\",\r\n  \"department\": \"Computer Science\",\r\n  \"personal_id\": \"1234588901234\",\r\n  \"rank\": \"Assistant Professor\",\r\n  \"role\": \"doctor\",\r\n  \"program_id\": 1,\r\n  \"teacher_id\":1\r\n}\r\n"
 						},
 						"url": {
 							"raw": "http://localhost:8000/api/teachers",
@@ -2473,7 +2473,7 @@
 					"response": []
 				},
 				{
-					"name": "delete registration of course",
+					"name": "confirm registration of course",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -3488,7 +3488,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/api/fees/student/2",
+							"raw": "http://localhost:8000/api/fees/student/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3498,7 +3498,7 @@
 								"api",
 								"fees",
 								"student",
-								"2"
+								"1"
 							]
 						}
 					},

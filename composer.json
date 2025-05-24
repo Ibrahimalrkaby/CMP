@@ -10,11 +10,8 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
-<<<<<<< HEAD
         "spatie/laravel-permission": "^6.18",
-=======
         "spatie/laravel-permission": "^6.17",
->>>>>>> da85b30997a9f549c26d237af080612837864fda
         "tymon/jwt-auth": "2.0.0"
     },
     "require-dev": {

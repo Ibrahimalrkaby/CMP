@@ -9,6 +9,7 @@ use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 
@@ -132,62 +133,63 @@ class LectureController extends Controller
                 'error' => 'Server Error: ' . $e->getMessage()
             ], 500);
         }
-
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'student_id' => 'required|exists:students_data,id',
-            'teacher_id' => 'required|exists:teacher_data,id',
-            'course_id' => 'required|exists:courses,id',
-            'table_name' => 'required|string|max:255',
-            'start_time' => 'required|date',
-            'end_time' => 'nullable|date',
-        ]);
-
-        // Create the Lecture
-        $lecture = Lecture::create($validated);
-
-        if (!$lecture) {
-            return response()->json(['error' => 'Failed to create Lecture'], 500);
-        }
-
-        // Dynamic table name
-        $attendanceTable = 'attendance_Lecture_' . $lecture->id;
-
-        // Log the action
-        Log::info("Attempting to create table: $attendanceTable");
-
-        // Create grade table if it doesn't exist
-        if (!Schema::hasTable($attendanceTable)) {
-            try {
-                Schema::create($attendanceTable, function (Blueprint $table) {
-                    $table->id();
-                    $table->unsignedBigInteger('course_id');
-                    $table->unsignedBigInteger('lecture_id');
-                    $table->unsignedBigInteger('student_id');
-                    $table->boolean('present')->default(true);
-                    $table->timestamps();
-
-                    $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
-                    $table->foreign('lecture_id')->references('id')->on('lectures')->onDelete('cascade');
-                    $table->foreign('student_id')->references('id')->on('students_data')->onDelete('cascade');
-
-                    $table->unique(['lecture_id', 'student_id']);
-                });
-                Log::info("Table $attendanceTable created successfully.");
-            } catch (\Exception $e) {
-                Log::error("Failed to create table $attendanceTable: " . $e->getMessage());
-                return response()->json(['error' => 'Lecture created but table creation failed.'], 500);
-            }
-        } else {
-            Log::info("Table $attendanceTable already exists.");
-        }
-
-        return response()->json([
-            'message' => 'Lecture created and grade table generated successfully.',
-            'Lecture' => $lecture
-        ], 201);
     }
+
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'student_id' => 'required|exists:students_data,id',
+    //         'teacher_id' => 'required|exists:teacher_data,id',
+    //         'course_id' => 'required|exists:courses,id',
+    //         'table_name' => 'required|string|max:255',
+    //         'start_time' => 'required|date',
+    //         'end_time' => 'nullable|date',
+    //     ]);
+
+    //     // Create the Lecture
+    //     $lecture = Lecture::create($validated);
+
+    //     if (!$lecture) {
+    //         return response()->json(['error' => 'Failed to create Lecture'], 500);
+    //     }
+
+    //     // Dynamic table name
+    //     $attendanceTable = 'attendance_Lecture_' . $lecture->id;
+
+    //     // Log the action
+    //     Log::info("Attempting to create table: $attendanceTable");
+
+    //     // Create grade table if it doesn't exist
+    //     if (!Schema::hasTable($attendanceTable)) {
+    //         try {
+    //             Schema::create($attendanceTable, function (Blueprint $table) {
+    //                 $table->id();
+    //                 $table->unsignedBigInteger('course_id');
+    //                 $table->unsignedBigInteger('lecture_id');
+    //                 $table->unsignedBigInteger('student_id');
+    //                 $table->boolean('present')->default(true);
+    //                 $table->timestamps();
+
+    //                 $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+    //                 $table->foreign('lecture_id')->references('id')->on('lectures')->onDelete('cascade');
+    //                 $table->foreign('student_id')->references('id')->on('students_data')->onDelete('cascade');
+
+    //                 $table->unique(['lecture_id', 'student_id']);
+    //             });
+    //             Log::info("Table $attendanceTable created successfully.");
+    //         } catch (\Exception $e) {
+    //             Log::error("Failed to create table $attendanceTable: " . $e->getMessage());
+    //             return response()->json(['error' => 'Lecture created but table creation failed.'], 500);
+    //         }
+    //     } else {
+    //         Log::info("Table $attendanceTable already exists.");
+    //     }
+
+    //     return response()->json([
+    //         'message' => 'Lecture created and grade table generated successfully.',
+    //         'Lecture' => $lecture
+    //     ], 201);
+    // }
 
 
     // Get all Lectures

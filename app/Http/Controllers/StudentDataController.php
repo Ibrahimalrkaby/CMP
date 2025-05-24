@@ -10,15 +10,7 @@ use App\Models\CourseStudent; // Import CourseStudent model
 
 class StudentDataController extends Controller
 {
-    // ... (Existing methods in your StudentDataController)
-
-    /**
-     * Get student course results for a specific semester with filtering and pagination.
-     *
-     * @param  int  $semester_id
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+    
     public function getStudentCourseResults(int $semester_id, Request $request): JsonResponse
     {
         // 4.1. Receive Parameters
@@ -83,7 +75,7 @@ class StudentDataController extends Controller
                 'code' => $item->course_code,
                 'pass' => $item->pass,
                 'mark' => $item->grade,
-                //'edit' => '...', // Add edit link/button info if needed
+                
             ];
         });
 

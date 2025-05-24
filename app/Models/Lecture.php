@@ -11,8 +11,6 @@ class Lecture extends Model
 
     protected $guarded = [];
 
-<<<<<<< HEAD
-=======
     protected $fillable = [
         'student_id',
         'teacher_id',
@@ -21,7 +19,6 @@ class Lecture extends Model
         'start_time'
     ];
 
->>>>>>> da85b30997a9f549c26d237af080612837864fda
     public function teacher()
     {
         return $this->belongsTo(TeacherData::class);
@@ -36,11 +33,8 @@ class Lecture extends Model
     // app/Models/Lecture.php
     public function attendances()
     {
-<<<<<<< HEAD
         return $this->hasMany(Attendance::class);
-=======
         return $this->hasOne(Attendance::class);
->>>>>>> da85b30997a9f549c26d237af080612837864fda
     }
 
     public function course()

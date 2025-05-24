@@ -39,23 +39,20 @@ class TeacherData extends Model
         return $this->hasMany(Chat::class);
     }
 
-<<<<<<< HEAD
     public function teacher()
     {
         return $this->belongsTo(Teacher::class , 'teacher_id');
-=======
-
-    public function teacher()
-    {
-        return $this->belongsTo(Teacher::class);
->>>>>>> da85b30997a9f549c26d237af080612837864fda
     }
+
+    // public function teacher()
+    // {
+    //     return $this->belongsTo(Teacher::class);
+    // }
 
     public function lecture()
     {
         return $this->hasMany(Lecture::class);
     }
-<<<<<<< HEAD
 
     public function courses()
     {
@@ -63,6 +60,4 @@ class TeacherData extends Model
     }
 
 
-=======
->>>>>>> da85b30997a9f549c26d237af080612837864fda
 }
