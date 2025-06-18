@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Teacher;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Requests\AdminRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
-class TeacherAuthController extends Controller
+class AdminAuthController extends Controller
 {
     /**
      * Create a new AuthController instance.
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:admin', ['except' => ['login', 'register']]);
     }
 
     /**
@@ -40,7 +42,6 @@ class TeacherAuthController extends Controller
                 'email' => $request->email,
                 'password' => bcrypt($request->password)
             ]);
-            $admin->assignRole('teacher'); // Assigns role specific to teacher guard
         } catch (\Exception $e) {
             return $this->serverError('User creation failed', $e);
         }
@@ -50,6 +51,7 @@ class TeacherAuthController extends Controller
             ['user' => $admin, 'message' => 'User registered successfully'],
             201
         );
+    }
     }
 
     /**
@@ -69,7 +71,7 @@ class TeacherAuthController extends Controller
         }
 
 
-        if (!$token = Auth::guard('teacher_api')->attempt($request->only('email', 'password'))) {
+        if (!$token = Auth::guard('admin_api')->attempt($request->only('email', 'password'))) {
             return $this->authError('Invalid email or password');
         }
 
@@ -82,7 +84,7 @@ class TeacherAuthController extends Controller
     public function me()
     {
         try {
-            $admin = auth()->guard('teacher_api')->user();
+            $admin = auth()->guard('admin_api')->user();
 
             if (!$admin) {
                 return response()->json([
@@ -110,7 +112,7 @@ class TeacherAuthController extends Controller
      */
     public function logout()
     {
-        auth()->guard('teacher_api')->logout();
+        auth()->guard('admin_api')->logout();
         return response()->json([
             'status' => 'success',
             'message' => 'Successfully logged out'

@@ -2,27 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use App\Http\Requests\AdminRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
-class AdminAuthController extends Controller
+class TeacherAuthController extends Controller
 {
     /**
      * Create a new AuthController instance.
      */
-    public function __construct()
-    {
-        $this->middleware('auth:admin', ['except' => ['login', 'register']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:teacher', ['except' => ['login', 'register']]);
+    // }
 
     /**
-     * Register a new admin and return JWT token.
+     * Register a new user and return JWT token.
      */
     public function register(Request $request)
     {
@@ -37,22 +35,21 @@ class AdminAuthController extends Controller
         }
 
         try {
-            $admin = Admin::create([
+            $admin = Teacher::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password)
             ]);
         } catch (\Exception $e) {
-            return $this->serverError('admin creation failed', $e);
+            return $this->serverError('User creation failed', $e);
         }
 
         return $this->respondWithToken(
             JWTAuth::fromUser($admin),
-            ['admin' => $admin, 'message' => 'admin registered successfully'],
+            ['user' => $admin, 'message' => 'User registered successfully'],
             201
         );
     }
-
 
     /**
      * Authenticate user and return JWT token.
@@ -71,7 +68,7 @@ class AdminAuthController extends Controller
         }
 
 
-        if (!$token = Auth::guard('admin_api')->attempt($request->only('email', 'password'))) {
+        if (!$token = Auth::guard('teacher_api')->attempt($request->only('email', 'password'))) {
             return $this->authError('Invalid email or password');
         }
 
@@ -84,7 +81,7 @@ class AdminAuthController extends Controller
     public function me()
     {
         try {
-            $admin = auth()->guard('admin_api')->user();
+            $admin = auth()->guard('teacher_api')->user();
 
             if (!$admin) {
                 return response()->json([
@@ -112,7 +109,7 @@ class AdminAuthController extends Controller
      */
     public function logout()
     {
-        auth()->guard('admin_api')->logout();
+        auth()->guard('teacher_api')->logout();
         return response()->json([
             'status' => 'success',
             'message' => 'Successfully logged out'

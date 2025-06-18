@@ -52,7 +52,7 @@ class AdminAuthController extends Controller
             201
         );
     }
-
+    }
 
     /**
      * Authenticate user and return JWT token.

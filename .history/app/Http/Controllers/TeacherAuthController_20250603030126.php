@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
-class StudentAuthController extends Controller
+class TeacherAuthController extends Controller
 {
     /**
      * Create a new AuthController instance.
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:teacher', ['except' => ['login', 'register']]);
     }
 
     /**
@@ -25,7 +26,7 @@ class StudentAuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:admins',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -34,19 +35,18 @@ class StudentAuthController extends Controller
         }
 
         try {
-            $user = User::create([
+            $admin = Teacher::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password)
             ]);
-            $user->assignRole('teacher'); // Assigns role specific to teacher guard
         } catch (\Exception $e) {
             return $this->serverError('User creation failed', $e);
         }
 
         return $this->respondWithToken(
-            JWTAuth::fromUser($user),
-            ['user' => $user, 'message' => 'User registered successfully'],
+            JWTAuth::fromUser($admin),
+            ['user' => $admin, 'message' => 'User registered successfully'],
             201
         );
     }
@@ -56,16 +56,19 @@ class StudentAuthController extends Controller
      */
     public function login(Request $request)
     {
+        // $validator = $request->Validated;
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
+
         if ($validator->fails()) {
             return $this->validationError($validator->errors());
         }
 
-        if (!$token = JWTAuth::attempt($request->only('email', 'password'))) {
+
+        if (!$token = Auth::guard('teacher_api')->attempt($request->only('email', 'password'))) {
             return $this->authError('Invalid email or password');
         }
 
@@ -78,9 +81,9 @@ class StudentAuthController extends Controller
     public function me()
     {
         try {
-            $user = auth()->user();
+            $admin = auth()->guard('teacher_api')->user();
 
-            if (!$user) {
+            if (!$admin) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'User not found'
@@ -89,7 +92,7 @@ class StudentAuthController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'user' => $user
+                'user' => $admin
             ]);
         } catch (JWTException $e) {
             return response()->json([
@@ -106,7 +109,7 @@ class StudentAuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        auth()->guard('teacher_api')->logout();
         return response()->json([
             'status' => 'success',
             'message' => 'Successfully logged out'

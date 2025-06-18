@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Teacher;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Requests\AdminRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
-class TeacherAuthController extends Controller
+class AdminAuthController extends Controller
 {
     /**
      * Create a new AuthController instance.
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:admin', ['except' => ['login', 'register']]);
     }
 
     /**
@@ -26,48 +28,29 @@ class TeacherAuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:teachers,email',
-            'password' => 'required|string|min:8|confirmed'
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'errors' => $validator->errors()
-            ], 422); // Validation error status code
+            return $this->validationError($validator->errors());
         }
 
         try {
-            $teacher = Teacher::create([
+            $admin = Admin::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => bcrypt($request->password),
+                'password' => bcrypt($request->password)
             ]);
-
-            $teacher->assignRole('teacher');
-
-            // Generate JWT token
-            $token = Auth::guard('teacher')->attempt([
-                'email' => $request->email,
-                'password' => $request->password
-            ]);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Teacher registered successfully',
-                'teacher' => $teacher,
-                'access_token' => $token,
-                'token_type' => 'bearer',
-                'expires_in' => Auth::guard('teacher')->factory()->getTTL() * 60
-            ], 201); // Created status code
-
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Registration failed',
-                'error' => $e->getMessage()
-            ], 500);
+            return $this->serverError('User creation failed', $e);
         }
+
+        return $this->respondWithToken(
+            JWTAuth::fromUser($admin),
+            ['admin' => $admin, 'message' => 'Admin registered successfully'],
+            201
+        );
     }
 
     /**
@@ -87,7 +70,7 @@ class TeacherAuthController extends Controller
         }
 
 
-        if (!$token = Auth::guard('teacher_api')->attempt($request->only('email', 'password'))) {
+        if (!$token = Auth::guard('admin_api')->attempt($request->only('email', 'password'))) {
             return $this->authError('Invalid email or password');
         }
 
@@ -100,7 +83,7 @@ class TeacherAuthController extends Controller
     public function me()
     {
         try {
-            $admin = auth()->guard('teacher_api')->user();
+            $admin = auth()->guard('admin_api')->user();
 
             if (!$admin) {
                 return response()->json([
@@ -128,7 +111,7 @@ class TeacherAuthController extends Controller
      */
     public function logout()
     {
-        auth()->guard('teacher_api')->logout();
+        auth()->guard('admin_api')->logout();
         return response()->json([
             'status' => 'success',
             'message' => 'Successfully logged out'

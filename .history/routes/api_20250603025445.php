@@ -3,7 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\GradeController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\LectureController;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\API\StudentController;
 use App\Http\Controllers\StudentAuthController;
 use App\Http\Controllers\TeacherAuthController;
@@ -27,11 +31,11 @@ use App\Http\Controllers\TeacherAuthController;
 Route::controller(StudentAuthController::class)->name('students.')->prefix('students')->group(function () {
     Route::post('register', 'register')->name('register');
     Route::post('login', 'login')->name('login');
-    Route::middleware('auth')->group(function () {
-        Route::post('logout', 'logout')->name('logout');
-        Route::post('refresh', 'refresh')->name('refresh');
-        Route::get('me', 'me')->name('me');
-    });
+    // Route::middleware('auth')->group(function () {
+    Route::post('logout', 'logout')->name('logout');
+    Route::post('refresh', 'refresh')->name('refresh');
+    Route::get('me', 'me')->name('me');
+    // });
 });
 
 // //Admin Auth Route
@@ -90,14 +94,57 @@ Route::controller(TeacherAuthController::class)->name('teacher.')->prefix('teach
 
 
 //Chat Route
-Route::name('chats.')->prefix('chats')->group(function () {
-    Route::get('/', [ChatController::class, 'show'])->name('show');
-    Route::post('/', [ChatController::class, 'store'])
-        ->name('store')
-        ->middleware('auth', 'teacher');
+Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group(function () {
+    Route::get('/', 'show')->name('show');
+    Route::post('/', 'store')->name('store');
 });
 
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
+// // attendance
+// Route::controller(LectureController::class)->group(function () {
+//     Route::post('/lectures', 'store')->name('store');
+//     Route::put('/lectures/{lecture}/attendance', 'updateAttendance');
+//     Route::get('/lectures/{lecture}/attendance', 'getAttendance');
 // });
+
+
+
+//Grade
+Route::prefix('grades')->group(function () {
+    Route::post('/{courseId}', [GradeController::class, 'store']);             // Add student grade
+    Route::get('/{courseId}', [GradeController::class, 'index']);              // Get all grades for course
+    Route::get('/{courseId}/{studentId}', [GradeController::class, 'show']);   // Get grade for student
+    Route::put('/{courseId}/{studentId}', [GradeController::class, 'update']); // Update student grade
+    Route::delete('/{courseId}/{studentId}', [GradeController::class, 'destroy']); // Delete grade
+});
+
+
+//Course
+Route::name('courses')->group(function () {
+    Route::get('/courses', [CourseController::class, 'index']);           // Get all courses
+    Route::post('/courses', [CourseController::class, 'store']);          // Create course (with grade table)
+    Route::get('/courses/{id}', [CourseController::class, 'show']);       // Get single course
+    Route::put('/courses/{id}', [CourseController::class, 'update']);     // Update course
+    Route::delete('/courses/{id}', [CourseController::class, 'destroy']); // Delete course and its grade table
+});
+
+
+
+//Lecture
+Route::name('lecture')->group(function () {
+    Route::get('/lecture', [LectureController::class, 'index']);           // Get all lectures
+    Route::post('/lecture', [LectureController::class, 'store']);          // Create lecture
+    Route::get('/lecture/{id}', [LectureController::class, 'show']);       // Get single lecture
+    Route::put('/lecture/{id}', [LectureController::class, 'update']);     // Update lecture
+    Route::delete('/lecture/{id}', [LectureController::class, 'destroy']); // Delete lecture
+});
+
+
+//Attendance
+Route::prefix('attendance')->group(function () {
+    Route::post('/{lectureId}', [AttendanceController::class, 'store']);             // Add student attendance
+    Route::get('/{lectureId}', [AttendanceController::class, 'index']);              // Get all attendance for course
+    Route::get('/{lectureId}/{studentId}', [AttendanceController::class, 'show']);   // Get attendance for student
+    Route::put('/{lectureId}/{studentId}', [AttendanceController::class, 'update']); // Update student attendance
+    Route::delete('/{lectureId}/{studentId}', [AttendanceController::class, 'destroy']); // Delete attendance
+});

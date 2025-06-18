@@ -2,30 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Requests\AdminRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
-class StudentAuthController extends Controller
+class AdminAuthController extends Controller
 {
     /**
      * Create a new AuthController instance.
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:admin', ['except' => ['login', 'register']]);
     }
 
     /**
-     * Register a new user and return JWT token.
+     * Register a new admin and return JWT token.
      */
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:admins',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -34,38 +37,41 @@ class StudentAuthController extends Controller
         }
 
         try {
-            $user = User::create([
+            $admin = Admin::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password)
             ]);
-            $user->assignRole('teacher'); // Assigns role specific to user guard
         } catch (\Exception $e) {
-            return $this->serverError('User creation failed', $e);
+            return $this->serverError('admin creation failed', $e);
         }
 
         return $this->respondWithToken(
-            JWTAuth::fromUser($user),
-            ['user' => $user, 'message' => 'User registered successfully'],
+            JWTAuth::fromUser($admin),
+            ['admin' => $admin, 'message' => 'admin registered successfully'],
             201
         );
     }
+
 
     /**
      * Authenticate user and return JWT token.
      */
     public function login(Request $request)
     {
+        // $validator = $request->Validated;
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
+
         if ($validator->fails()) {
             return $this->validationError($validator->errors());
         }
 
-        if (!$token = JWTAuth::attempt($request->only('email', 'password'))) {
+
+        if (!$token = Auth::guard('admin_api')->attempt($request->only('email', 'password'))) {
             return $this->authError('Invalid email or password');
         }
 
@@ -78,9 +84,9 @@ class StudentAuthController extends Controller
     public function me()
     {
         try {
-            $user = auth()->user();
+            $admin = auth()->guard('admin_api')->user();
 
-            if (!$user) {
+            if (!$admin) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'User not found'
@@ -89,7 +95,7 @@ class StudentAuthController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'user' => $user
+                'user' => $admin
             ]);
         } catch (JWTException $e) {
             return response()->json([
@@ -106,7 +112,7 @@ class StudentAuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        auth()->guard('admin_api')->logout();
         return response()->json([
             'status' => 'success',
             'message' => 'Successfully logged out'

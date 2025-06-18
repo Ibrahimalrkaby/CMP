@@ -31,11 +31,11 @@ use App\Http\Controllers\TeacherAuthController;
 Route::controller(StudentAuthController::class)->name('students.')->prefix('students')->group(function () {
     Route::post('register', 'register')->name('register');
     Route::post('login', 'login')->name('login');
-    Route::middleware('auth')->group(function () {
-        Route::post('logout', 'logout')->name('logout');
-        Route::post('refresh', 'refresh')->name('refresh');
-        Route::get('me', 'me')->name('me');
-    });
+    // Route::middleware('auth')->group(function () {
+    Route::post('logout', 'logout')->name('logout');
+    Route::post('refresh', 'refresh')->name('refresh');
+    Route::get('me', 'me')->name('me');
+    // });
 });
 
 // //Admin Auth Route

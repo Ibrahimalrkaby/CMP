@@ -18,7 +18,7 @@ class AdminAuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:admin', ['except' => ['login', 'register']]);
     }
 
     /**
@@ -28,7 +28,7 @@ class AdminAuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:admins',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -42,14 +42,14 @@ class AdminAuthController extends Controller
                 'email' => $request->email,
                 'password' => bcrypt($request->password)
             ]);
-            $admin->assignRole('admin'); // Assigns role specific to admin guard
+            // $user->assignRole('student'); // Assigns role specific to user guard
         } catch (\Exception $e) {
             return $this->serverError('User creation failed', $e);
         }
 
         return $this->respondWithToken(
             JWTAuth::fromUser($admin),
-            ['user' => $admin, 'message' => 'User registered successfully'],
+            ['admin' => $admin, 'message' => 'Admin registered successfully'],
             201
         );
     }
