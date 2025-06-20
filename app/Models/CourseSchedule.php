@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CourseSchedule extends Model
 {
+    
     use HasFactory;
 
     protected $fillable = [

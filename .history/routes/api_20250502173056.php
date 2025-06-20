@@ -3,9 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
-use App\Http\Controllers\LectureController;
 use App\Http\Controllers\AdminAuthController;
-use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\API\StudentController;
 use App\Http\Controllers\StudentAuthController;
 use App\Http\Controllers\TeacherAuthController;
@@ -94,28 +92,14 @@ Route::controller(TeacherAuthController::class)->name('teacher.')->prefix('teach
 //Chat Route
 Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group(function () {
     Route::get('/', 'show')->name('show');
+
     Route::post('/', 'store')->name('store');
+
+    Route::post('/', 'store')->name('store');
+
 });
 
 
-
-// Route::post('/lectures/{lecture}/attendance', [AttendanceController::class, 'createAttendance'])
-//     ->name('attendance.create');
-
-// Route::put('/lectures/{lecture}/attendance', [AttendanceController::class, 'updateAttendance'])
-//     ->name('attendance.update');
-
-// Route::get('/lectures/{lecture}/attendance', [AttendanceController::class, 'getAttendance'])
-//     ->name('attendance.show');
-
-
-// Route::post('/lectures', [LectureController::class,]);
-// Route::put('/lectures/{lecture}/attendance', [LectureController::class, 'updateAttendance']);
-// Route::get('/lectures/{lecture}/attendance', [LectureController::class, 'getAttendance']);
-
-
-Route::controller(LectureController::class)->group(function () {
-    Route::post('/lectures', 'store')->name('store');
-    Route::put('/lectures/{lecture}/attendance', 'updateAttendance');
-    Route::get('/lectures/{lecture}/attendance', 'getAttendance');
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });

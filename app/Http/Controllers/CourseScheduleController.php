@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\StudentData;
 use App\Models\TeacherData;
 use Illuminate\Http\Request;
@@ -28,16 +29,19 @@ class CourseScheduleController extends Controller
         });
 
         return response()->json([
-            'student' => $student->name,
+            'student' => $student->full_name,
             'courses' => $coursesWithSchedules,
         ]);
     }
 
+
     public function teacherSchedule($teacher_id)
     {
-        $teacher = TeacherData::with(['courses.schedules'])->findOrFail($teacher_id);
+        $teacherData = TeacherData::with(['teacher', 'courses.schedules'])->findOrFail($teacher_id);
 
-        $schedule = $teacher->courses->map(function($course) {
+        $courses = Course::with('schedules')->where('teacher_id', $teacher_id)->get();
+
+        $schedule = $courses->map(function($course) {
             return [
                 'course_name' => $course->name,
                 'schedules' => $course->schedules->map(function($schedule) {
@@ -48,13 +52,14 @@ class CourseScheduleController extends Controller
                         'end_time' => $schedule->end_time,
                         'location' => $schedule->location,
                     ];
-                })
+                }),
             ];
         });
 
         return response()->json([
-            'teacher' => $teacher->name,
+            'teacher' => $teacherData->teacher ? $teacherData->teacher->name : null,  
             'schedule' => $schedule,
         ]);
     }
+
 }

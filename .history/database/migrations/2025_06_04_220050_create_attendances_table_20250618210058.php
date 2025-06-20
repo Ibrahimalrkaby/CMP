@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('lecture_id');
+            $table->unsignedBigInteger('student_id');
             $table->bigInteger('lecture_id')->unsigned();
             $table->bigInteger('student_id')->unsigned();
             $table->boolean('present')->default(false);
@@ -20,8 +22,10 @@ return new class extends Migration
 
             $table->foreign('lecture_id')->references('id')->on('lectures');
             $table->foreign('student_id')->references('student_id')->on('students_data');
-        });
-    }
+});
+        }
+
+       
 
     /**
      * Reverse the migrations.

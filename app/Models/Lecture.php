@@ -33,6 +33,7 @@ class Lecture extends Model
     // app/Models/Lecture.php
     public function attendances()
     {
+        return $this->hasMany(Attendance::class);
         return $this->hasOne(Attendance::class);
     }
 

@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('course_student', function (Blueprint $table) {
-            //
-        });
+        if (!Schema::hasColumn('course_student', 'grade')) {
+            Schema::table('course_student', function (Blueprint $table) {
+                $table->string('grade')->nullable()->after('student_id');
+            });
+        }
     }
+
 
     /**
      * Reverse the migrations.
@@ -22,7 +25,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('course_student', function (Blueprint $table) {
-            //
+            $table->dropColumn('grade');
         });
     }
 };

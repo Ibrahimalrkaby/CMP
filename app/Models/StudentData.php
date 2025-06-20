@@ -14,13 +14,18 @@ class StudentData extends Model
     protected $table = 'students_data';
 
     protected $fillable = [
-        'name',
+        'student_id',
+        'full_name',
         'email',
         'phone',
         'department',
         'personal_id',
         'guardian_id',
         'academic_year',
+        'program_id',
+        'gpa',
+        'level',
+        'total_credit_hours',
     ];
 
     // Relationship to PersonalData (StudentData BELONGS TO PersonalData)
@@ -70,15 +75,30 @@ class StudentData extends Model
     public function registeredCourses()
     {
         return $this->belongsToMany(Course::class, 'course_registrations', 'student_id', 'course_id')
-            ->with(['schedules', 'teacher'])
-            ->withPivot('semester_id', 'status')
-            ->wherePivot('status', 'approved');
-    }
+                    ->with(['schedules', 'teacher'])
+                    ->withPivot('semester_id', 'status')
+                    ->wherePivot('status', 'confirmed');
+
+    }                
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'student_id', 'id');
     }
+
+
+
+    // public function attendance()
+    // {
+    //     return $this->belongsTo(Attendance::class);
+    // }
+
+            
+
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 
 
     public function attendance()

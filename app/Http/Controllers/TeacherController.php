@@ -36,23 +36,23 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:teacher_data,email',
             'phone' => 'required|string|max:20',
             'department' => 'required|string|max:255',
             'personal_id' => 'required|string|unique:teacher_data,personal_id',
             'rank' => 'required|string|max:255',
+            'role' => 'required|string|in:doctor,teaching_assistant',
             'program_id' => 'nullable|exists:programs,id',
+            'teacher_id' => 'required|exists:teachers,id',
         ]);
 
         $teacher= TeacherData::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
             'phone' => $validatedData['phone'],
             'department' => $validatedData['department'],
             'personal_id' => $validatedData['personal_id'],
             'rank' => $validatedData['rank'],
+            'role' => $validatedData['role'],
             'program_id' => $validatedData['program_id'],
+            'teacher_id' => $validatedData['teacher_id'],
         ]);
 
         return response()->json([

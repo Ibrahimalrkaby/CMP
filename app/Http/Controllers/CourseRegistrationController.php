@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\CourseRegistration;
+use App\Models\CourseStudent;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Models\StudentData;
 
 class CourseRegistrationController extends Controller
 {
@@ -34,14 +37,13 @@ class CourseRegistrationController extends Controller
         // Check if the student has passed all prerequist courses
         $course = Course::with('prerequisites')->findOrFail($courseId);
         foreach ($course->prerequisites as $prerequisite) {
-            $hasPassed = CourseRegistration::where('student_id', $studentId)
-                ->where('course_id', $prerequisite->id)
-                ->where('status', 'confirmed')
+            $passed = CourseStudent::where('student_id', $studentId)
+                ->where('course_id', $courseId)
                 ->whereNotNull('grade')
-                ->where('grade', '>=', 60) 
+                ->where('grade', '>=', 60)
                 ->exists();
 
-            if (!$hasPassed) {
+            if (!$passed) {
                 return response()->json([
                     'message' => 'Missing prerequisite: ' . $prerequisite->name
                 ], 400);
@@ -61,16 +63,6 @@ class CourseRegistrationController extends Controller
             ], 400);
         }
 
-        // Check the student's GPA
-        $studentGPA = $this->calculateStudentGPA($studentId);
-
-        // Assuming the student needs a GPA of 2.0 or higher to register
-        if ($studentGPA < 2.0) {
-            return response()->json([
-                'message' => 'Your GPA is below the required for registration.'
-            ], 400);
-        }
-
         // Register the student
         $registration = CourseRegistration::create([
             'student_id' => $studentId,
@@ -84,42 +76,6 @@ class CourseRegistrationController extends Controller
             'data' => $registration
         ]);
     }
-
-    // helper function to convert grades to points
-    private function convertGradeToPoints($grade)
-    {
-        switch ($grade) {
-            case 'A': return 4.0;
-            case 'B': return 3.0;
-            case 'C': return 2.0;
-            case 'D': return 1.0;
-            case 'F': return 0.0;
-            default: return 0.0;
-        }
-    }
-    
-    // helper function to calculate GPA
-    private function calculateStudentGPA($studentId)
-    {
-        // calculate GPA based on the grades stored in the course student pivot
-        $registrations = CourseRegistration::where('student_id', $studentId)->whereNotNull('grade')->get();
-        $totalPoints = 0;
-        $totalCourses = 0;
-
-        foreach ($registrations as $registration) {
-            $grade = $registration->grade;
-            $totalPoints += $grade;
-            $totalCourses++;
-        }
-
-        if ($totalCourses == 0) {
-            return 0;
-        }
-
-        return $totalPoints / $totalCourses;
-    }
-
-
 
     // Get all course registrations for a student
     public function studentCourses($student_id)
@@ -165,4 +121,85 @@ class CourseRegistrationController extends Controller
         return response()->json(['message' => 'Registration deleted successfully']);
     }
 
+ // ( registered course section ) in (doctor):
+
+    public function getRegisteredCourses(int $studentId, Request $request): JsonResponse
+    {
+        // Find the student or return 404 if not found
+        $student = StudentData::findOrFail($studentId);
+
+        // Fetch the student's course registrations with course and semester relations
+        $registrations = CourseRegistration::with(['course', 'semester'])
+            ->where('student_id', $studentId)
+            ->when($request->has('search'), function ($query) use ($request) {
+                $search = $request->query('search');
+                $query->whereHas('course', function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('code', 'like', '%' . $search . '%');
+                });
+            })
+            ->get();
+
+        // Calculate the total credit hours of all registered courses
+        $totalRegisteredHours = $registrations->sum(function ($reg) {
+            return $reg->course->credit_hours ?? 0;
+        });
+
+        // Calculate the total credit hours for confirmed courses only
+        $totalNumberOfHoursConfirmed = $registrations
+            ->where('status', 'confirmed')
+            ->sum(function ($reg) {
+                return $reg->course->credit_hours ?? 0;
+            });
+
+        // Format the course data
+        $formattedCourses = $registrations->map(function ($reg) {
+            return [
+                'course_code' => $reg->course->code,
+                'course_name' => $reg->course->name,
+                'credit_hours' => $reg->course->credit_hours,
+                'semester' => $reg->semester->description ?? null,
+                'status' => $reg->status,
+                'grade' => $reg->grade,
+            ];
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'student_name' => $student->full_name,
+            'student_id' => $student->student_id,
+            'gpa' => $student->gpa,
+            'level' => $student->level,
+            'total_registered_hours' => $totalRegisteredHours,
+            'total_confirmed_hours' => $totalNumberOfHoursConfirmed,
+            'courses' => $formattedCourses,
+        ], 200);
+    }
+
+    public function confirmRegistration(int $studentId, Request $request): JsonResponse
+    {
+        $student = StudentData::findOrFail($studentId);
+        $action = $request->input('action'); // Get the action from the request ('confirm' or 'not_confirm')
+
+        if ($action === 'confirm') {
+            $registeredCourses = $student->registeredCourses()->get(); // Get the registered courses
+
+            foreach ($registeredCourses as $course) {
+                $registration = CourseRegistration::where('student_id', $studentId)
+                    ->where('course_id', $course->id)
+                    ->where('semester_id', $course->pivot->semester_id)
+                    ->first();
+                if ($registration) {
+                    $registration->status = 'confirmed';
+                    $registration->save();
+                }
+            }
+            return response()->json(['success' => true, 'message' => 'Registration confirmed.'], 200);
+        } elseif ($action === 'not_confirm') {
+            return response()->json(['success' => false, 'message' => 'Registration not confirmed.'], 200);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Invalid action.'], 400);
+        }
+    }
 }
+

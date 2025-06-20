@@ -33,7 +33,11 @@ class Course extends Model
     public function student()
     {
 
+        return $this->belongsToMany(StudentData::class, 'course_student')
+                    ->withPivot('grade');
+
         return $this->belongsTo(StudentData::class, 'student_id', 'student_id');
+
     }
 
     /**
@@ -56,7 +60,7 @@ class Course extends Model
      */
     public function examSchedules()
     {
-        return $this->hasMany(ExamSchedule::class);
+        return $this->hasMany(ExamSchedule::class , 'course_id');
     }
 
     public function teacher()

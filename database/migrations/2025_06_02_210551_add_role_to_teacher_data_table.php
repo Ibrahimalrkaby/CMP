@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up()
     {
-        // تحقق من وجود العمود قبل إضافته
         if (!Schema::hasColumn('teacher_data', 'role')) {
             Schema::table('teacher_data', function (Blueprint $table) {
                 $table->string('role')->after('rank');

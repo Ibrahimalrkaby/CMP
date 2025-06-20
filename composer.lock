@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
+    "content-hash": "ec577fa4d77d3476c0f1dd31ebdb84e4",
+=======
     "content-hash": "874f2ef6a8afc8f0c18f7da48bc286cd",
+>>>>>>> da85b30997a9f549c26d237af080612837864fda
     "packages": [
         {
             "name": "brick/math",
@@ -3310,6 +3314,18 @@
         },
         {
             "name": "spatie/laravel-permission",
+<<<<<<< HEAD
+            "version": "6.18.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-permission.git",
+                "reference": "3c05f04d12275dfbe462c8b4aae3290e586c2dde"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/3c05f04d12275dfbe462c8b4aae3290e586c2dde",
+                "reference": "3c05f04d12275dfbe462c8b4aae3290e586c2dde",
+=======
             "version": "6.17.0",
             "source": {
                 "type": "git",
@@ -3320,6 +3336,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/02ada8f638b643713fa2fb543384738e27346ddb",
                 "reference": "02ada8f638b643713fa2fb543384738e27346ddb",
+>>>>>>> da85b30997a9f549c26d237af080612837864fda
                 "shasum": ""
             },
             "require": {
@@ -3381,7 +3398,11 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
+<<<<<<< HEAD
+                "source": "https://github.com/spatie/laravel-permission/tree/6.18.0"
+=======
                 "source": "https://github.com/spatie/laravel-permission/tree/6.17.0"
+>>>>>>> da85b30997a9f549c26d237af080612837864fda
             },
             "funding": [
                 {
@@ -3389,7 +3410,11 @@
                     "type": "github"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2025-05-14T03:32:23+00:00"
+=======
             "time": "2025-04-08T15:06:14+00:00"
+>>>>>>> da85b30997a9f549c26d237af080612837864fda
         },
         {
             "name": "stella-maris/clock",

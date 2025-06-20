@@ -11,10 +11,6 @@ class EventController extends Controller
      // Create an event
      public function store(Request $request)
      {
-        if (Auth::user()->role !== 'admin') {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-        
         $request->validate([
              'title' => 'required|string|max:255',
              'description' => 'required|string',

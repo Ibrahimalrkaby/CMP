@@ -25,8 +25,24 @@ class CoursePrerequisiteController extends Controller
     public function show($course_id)
     {
         $course = Course::with('prerequisites')->findOrFail($course_id);
-        return response()->json($course->prerequisites);
+
+        return response()->json([
+            'id' => $course->id,
+            'name' => $course->name,
+            'description' => $course->description,
+            'department' => $course->department,
+            'level' => $course->level,
+            'credit_hours' => $course->credit_hours,
+            'prerequisites' => $course->prerequisites->map(function ($prereq) {
+                return [
+                    'id' => $prereq->id,
+                    'name' => $prereq->name,
+                    'description' => $prereq->description,
+                ];
+            }),
+        ]);
     }
+
 
     // Remove a prerequisite
     public function destroy(Request $request)

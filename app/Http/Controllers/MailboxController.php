@@ -11,10 +11,6 @@ class MailboxController extends Controller
     // send a message to a student
     public function sendMessage(Request $request)
     {
-        $user = Auth::user();
-        if (!in_array(Auth::user()->role, ['admin', 'doctor'])) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
         $request->validate([
             'sender_id' => 'required|integer',
             'sender_type' => 'required|in:admin,doctor,assistant',

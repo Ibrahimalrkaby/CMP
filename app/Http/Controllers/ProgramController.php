@@ -18,7 +18,7 @@ class ProgramController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:programs,name',
             'description' => 'nullable|string',
         ]);
 

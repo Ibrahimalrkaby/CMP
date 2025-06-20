@@ -100,6 +100,7 @@ Route::controller(ChatController::class)->name('chats.')->prefix('chats')->group
 });
 
 
+<<<<<<< HEAD:.history/routes/api_20250603025445.php
 // // attendance
 // Route::controller(LectureController::class)->group(function () {
 //     Route::post('/lectures', 'store')->name('store');
@@ -148,3 +149,25 @@ Route::prefix('attendance')->group(function () {
     Route::put('/{lectureId}/{studentId}', [AttendanceController::class, 'update']); // Update student attendance
     Route::delete('/{lectureId}/{studentId}', [AttendanceController::class, 'destroy']); // Delete attendance
 });
+=======
+
+// Route::post('/lectures/{lecture}/attendance', [AttendanceController::class, 'createAttendance'])
+//     ->name('attendance.create');
+
+// Route::put('/lectures/{lecture}/attendance', [AttendanceController::class, 'updateAttendance'])
+//     ->name('attendance.update');
+
+// Route::get('/lectures/{lecture}/attendance', [AttendanceController::class, 'getAttendance'])
+//     ->name('attendance.show');
+
+
+// Route::group(function () {
+
+Route::group(function () {
+
+//     Route::post('/lectures', [LectureController::class, 'store']);
+//     Route::put('/lectures/{lecture}/attendance', [LectureController::class, 'updateAttendance']);
+//     Route::get('/lectures/{lecture}/attendance', [LectureController::class, 'getAttendance']);
+// });
+});
+>>>>>>> 815b68334814763cb0571dfd3fdce47e4a7f32e5:.history/routes/api_20250504022305.php
