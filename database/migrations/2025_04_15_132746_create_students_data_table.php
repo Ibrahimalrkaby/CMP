@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('department');
 
-            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('student_id')->unique();
             $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->bigInteger('personal_id')->unsigned();
