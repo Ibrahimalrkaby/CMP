@@ -43,6 +43,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // حذف الجداول المرتبطة
         Schema::dropIfExists('course_student');
         Schema::dropIfExists('course_semester');
         Schema::dropIfExists('courses');

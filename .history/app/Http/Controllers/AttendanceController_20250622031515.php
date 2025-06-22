@@ -170,23 +170,35 @@ class AttendanceController extends Controller
         $table = 'attendance_lecture_' . $lectureId;
 
         if (!Schema::hasTable($table)) {
-            return response()->json(['error' => 'Attendance table not found'], 404);
+            return response()->json(['error' => 'Attendance table for this lecture does not exist.'], 404);
         }
 
         $request->validate([
-            'present' => 'required|boolean'
+            'attendances' => 'required|array',
+            'attendances.*.course_id' => 'required|exists:courses,id',
+            'attendances.*.lecture_id' => 'required|exists:lectures,id',
+            'attendances.*.student_id' => 'required|exists:students_data,id',
+            'attendances.*.present' => 'required|boolean'
         ]);
 
         try {
-            DB::table($table)->updateOrInsert(
-                ['student_id' => $studentId], // Only need student_id
-                [
-                    'present' => $request->present,
-                    'updated_at' => now()
-                ]
-            );
+            foreach ($request->attendances as $attendance) {
+                DB::table($table)->updateOrInsert(
+                    [
+                        'student_id' => $studentId,
+                        'lecture_id' => $attendance['lecture_id']
+                    ],
+                    [
+                        'present' => $attendance['present'],
+                        'updated_at' => now()
+                    ]
+                );
+            }
 
-            return response()->json(['message' => 'Attendance updated successfully']);
+            return response()->json([
+                'message' => 'Attendance updated successfully',
+                'updated_count' => count($request->attendances)
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Update failed: ' . $e->getMessage()

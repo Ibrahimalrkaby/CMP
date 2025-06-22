@@ -25,10 +25,10 @@ class Lecture extends Model
     }
 
     // app/Models/Attendance.php
-    // public function student()
-    // {
-    //     return $this->belongsTo(StudentData::class, 'student_id', 'student_id');
-    // }
+    public function student()
+    {
+        return $this->belongsTo(StudentData::class, 'student_id', 'student_id');
+    }
 
     // app/Models/Lecture.php
     public function attendances()

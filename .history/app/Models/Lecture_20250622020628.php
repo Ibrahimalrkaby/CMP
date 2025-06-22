@@ -15,8 +15,7 @@ class Lecture extends Model
         'teacher_id',
         'course_id',
         'table_name',
-        'start_time',
-        'end_time'
+        'start_time'
     ];
 
     public function teacher()
@@ -25,10 +24,10 @@ class Lecture extends Model
     }
 
     // app/Models/Attendance.php
-    // public function student()
-    // {
-    //     return $this->belongsTo(StudentData::class, 'student_id', 'student_id');
-    // }
+    public function student()
+    {
+        return $this->belongsTo(StudentData::class, 'student_id', 'student_id');
+    }
 
     // app/Models/Lecture.php
     public function attendances()

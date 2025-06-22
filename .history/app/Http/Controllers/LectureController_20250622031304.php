@@ -8,10 +8,9 @@ use App\Models\Lecture;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Validator;
 
 class LectureController extends Controller
@@ -288,24 +287,18 @@ class LectureController extends Controller
     public function destroy($id)
     {
         $lecture = Lecture::findOrFail($id);
-        $tableName = 'attendance_lecture_' . $lecture->id;
+        $attendanceTable = 'grades_Lecture_' . $lecture->id;
 
-        try {
-            // Drop the dynamic attendance table if exists
-            if (Schema::hasTable($tableName)) {
-                Schema::drop($tableName);
-            }
-
-            // Delete the lecture
-            $lecture->delete();
-
-            return response()->json([
-                'message' => 'Lecture and its attendance table deleted successfully.'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Deletion failed: ' . $e->getMessage()
-            ], 500);
+        // Drop the dynamic grades table if it exists
+        if (Schema::hasTable($attendanceTable)) {
+            Schema::drop($attendanceTable);
         }
+
+        // Delete the Lecture
+        $lecture->delete();
+
+        return response()->json([
+            'message' => 'Lecture and its grade table deleted successfully.'
+        ]);
     }
 }

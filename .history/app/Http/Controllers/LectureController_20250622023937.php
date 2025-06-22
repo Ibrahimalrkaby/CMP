@@ -8,27 +8,16 @@ use App\Models\Lecture;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Validator;
 
 class LectureController extends Controller
 {
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'teacher_id' => 'required|exists:teacher_data,id',
-            'course_id' => 'required|exists:courses,id',
-            'table_name' => 'required|unique:lectures',
-            'start_time' => 'required|date',
-            'end_time' => 'required|date'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
+        // ... validation remains the same ...
 
         // Create lecture
         $lecture = Lecture::create([
@@ -39,62 +28,26 @@ class LectureController extends Controller
             'end_time' => $request->end_time
         ]);
 
-        // Create dynamic attendance table
-        $tableName = 'attendance_lecture_' . $lecture->id;
+        // Get students enrolled in the course THROUGH PIVOT TABLE
+        $course = Course::with('students')->find($request->course_id);
 
-        try {
-            if (!Schema::hasTable($tableName)) {
-                Schema::create($tableName, function (Blueprint $table) {
-                    $table->id();
-                    $table->unsignedBigInteger('student_id');
-                    $table->boolean('present')->default(false);
-                    $table->timestamps();
-
-                    $table->foreign('student_id')
-                        ->references('id')
-                        ->on('students_data')
-                        ->onDelete('cascade');
-                });
-            }
-
-            // Get course with enrolled students
-            $course = Course::with('students')->find($request->course_id);
-
-            if (!$course) {
-                return response()->json(['message' => 'Course not found'], 404);
-            }
-
-            // Insert attendance records
-            $attendanceData = [];
-            $now = now();
-
-            foreach ($course->students as $student) {
-                $attendanceData[] = [
-                    'student_id' => $student->id,
-                    'present' => false,
-                    'created_at' => $now,
-                    'updated_at' => $now
-                ];
-            }
-
-            // Bulk insert into dynamic table
-            if (!empty($attendanceData)) {
-                DB::table($tableName)->insert($attendanceData);
-            }
-
-            return response()->json([
-                'message' => 'Lecture and attendance table created successfully',
-                'table_name' => $tableName,
-                'data' => $lecture
-            ], 201);
-        } catch (\Exception $e) {
-            // Rollback lecture creation if table creation fails
-            $lecture->delete();
-
-            return response()->json([
-                'error' => 'Failed to create attendance table: ' . $e->getMessage()
-            ], 500);
+        if (!$course) {
+            return response()->json(['message' => 'Course not found'], 404);
         }
+
+        // Create attendance records
+        foreach ($course->students as $student) {
+            Attendance::create([
+                'lecture_id' => $lecture->id,
+                'student_id' => $student->id,
+                'present' => false
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Lecture and attendance records created successfully',
+            'data' => $lecture
+        ], 201);
     }
 
     public function updateAttendance(Request $request, Lecture $lecture)
@@ -288,24 +241,18 @@ class LectureController extends Controller
     public function destroy($id)
     {
         $lecture = Lecture::findOrFail($id);
-        $tableName = 'attendance_lecture_' . $lecture->id;
+        $attendanceTable = 'grades_Lecture_' . $lecture->id;
 
-        try {
-            // Drop the dynamic attendance table if exists
-            if (Schema::hasTable($tableName)) {
-                Schema::drop($tableName);
-            }
-
-            // Delete the lecture
-            $lecture->delete();
-
-            return response()->json([
-                'message' => 'Lecture and its attendance table deleted successfully.'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Deletion failed: ' . $e->getMessage()
-            ], 500);
+        // Drop the dynamic grades table if it exists
+        if (Schema::hasTable($attendanceTable)) {
+            Schema::drop($attendanceTable);
         }
+
+        // Delete the Lecture
+        $lecture->delete();
+
+        return response()->json([
+            'message' => 'Lecture and its grade table deleted successfully.'
+        ]);
     }
 }

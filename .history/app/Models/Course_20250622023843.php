@@ -30,14 +30,15 @@ class Course extends Model
     /**
      * The students that belong to the course, with their grades.
      */
-    public function students(): BelongsToMany
+    public function student()
     {
+
         return $this->belongsToMany(
-            StudentData::class,
-            'course_student',
-            'course_id',
-            'student_id'
-        )->withPivot('grade');
+            StudentData::class, 
+            'course_student',  // Pivot table name
+            'course_id',       // Foreign key on pivot table
+            'student_id'      // Foreign key on related table
+            ->withPivot('grade');
     }
 
     /**
