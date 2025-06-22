@@ -31,11 +31,10 @@ class CourseController extends Controller
             'schedules.*.type' => 'required_with:schedules|string',
         ]);
 
-        $course = null;
-        $gradesTable = null;
-
         try {
-            // 1. Create course
+            DB::beginTransaction();
+
+            // Create course
             $course = Course::create([
                 'name' => $validated['name'],
                 'description' => $validated['description'],
@@ -45,7 +44,7 @@ class CourseController extends Controller
                 'teacher_id' => $validated['teacher_id'] ?? null,
             ]);
 
-            // 2. Create schedules
+            // Create course schedule(s) if provided
             if (isset($validated['schedules'])) {
                 foreach ($validated['schedules'] as $schedule) {
                     $course->schedules()->create([
@@ -59,16 +58,17 @@ class CourseController extends Controller
                 }
             }
 
-            // 3. Create grade table
+            // Create grade table
             $gradesTable = 'grades_course_' . $course->id;
             Log::info("Attempting to create table: $gradesTable");
 
+            // Drop table if it already exists (shouldn't happen, but just in case)
             if (Schema::hasTable($gradesTable)) {
                 Schema::drop($gradesTable);
                 Log::info("Existing table $gradesTable dropped before recreation.");
             }
 
-            // Create the table without foreign key constraint
+            // Create new table
             Schema::create($gradesTable, function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('student_id');
@@ -81,10 +81,18 @@ class CourseController extends Controller
                 $table->decimal('course_grade', 5, 2)->nullable();
                 $table->timestamps();
 
+                // Use this if students_data table exists
+                $table->foreign('student_id')
+                    ->references('id')
+                    ->on('students_data')
+                    ->onDelete('cascade');
+
                 $table->unique(['student_id']);
             });
 
             Log::info("Table $gradesTable created successfully.");
+
+            DB::commit();
 
             return response()->json([
                 'message' => 'Course, schedules, and grade table created successfully',
@@ -92,13 +100,18 @@ class CourseController extends Controller
                 'grade_table' => $gradesTable
             ], 201);
         } catch (\Exception $e) {
-            // Clean up resources
-            if ($course) {
-                $course->schedules()->delete();
+            // Only rollback if a transaction was started
+            if (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
+
+            // Delete course if it was created
+            if (isset($course)) {
                 $course->delete();
             }
 
-            if ($gradesTable && Schema::hasTable($gradesTable)) {
+            // Drop table if it was created
+            if (isset($gradesTable) && Schema::hasTable($gradesTable)) {
                 Schema::drop($gradesTable);
             }
 
@@ -109,6 +122,8 @@ class CourseController extends Controller
             ], 500);
         }
     }
+
+
     // get all courses
 
     public function index()

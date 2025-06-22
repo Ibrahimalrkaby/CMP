@@ -31,25 +31,18 @@ class CourseController extends Controller
             'schedules.*.type' => 'required_with:schedules|string',
         ]);
 
-        $course = null;
-        $gradesTable = null;
-
         try {
-            // 1. Create course
-            $course = Course::create([
-                'name' => $validated['name'],
-                'description' => $validated['description'],
-                'department' => $validated['department'],
-                'level' => $validated['level'],
-                'credit_hours' => $validated['credit_hours'],
-                'teacher_id' => $validated['teacher_id'] ?? null,
-            ]);
+            // Start transaction only when we're ready to perform DB operations
+            DB::beginTransaction();
 
-            // 2. Create schedules
-            if (isset($validated['schedules'])) {
-                foreach ($validated['schedules'] as $schedule) {
+            // Create course
+            $course = Course::create($validated);
+
+            // Create course schedule(s) if provided
+            if ($request->has('schedules')) {
+                foreach ($request->schedules as $schedule) {
                     $course->schedules()->create([
-                        'teacher_id' => $validated['teacher_id'] ?? null,
+                        'teacher_id' => $request->teacher_id,
                         'day' => $schedule['day'],
                         'start_time' => $schedule['start_time'],
                         'end_time' => $schedule['end_time'],
@@ -59,46 +52,55 @@ class CourseController extends Controller
                 }
             }
 
-            // 3. Create grade table
+            // Create grade table
             $gradesTable = 'grades_course_' . $course->id;
             Log::info("Attempting to create table: $gradesTable");
 
-            if (Schema::hasTable($gradesTable)) {
-                Schema::drop($gradesTable);
-                Log::info("Existing table $gradesTable dropped before recreation.");
+            if (!Schema::hasTable($gradesTable)) {
+                Schema::create($gradesTable, function (Blueprint $table) {
+                    $table->id();
+                    $table->unsignedBigInteger('student_id');
+                    $table->decimal('midterm_exam', 5, 2)->nullable();
+                    $table->decimal('practical_exam', 5, 2)->nullable();
+                    $table->decimal('oral_exam', 5, 2)->nullable();
+                    $table->decimal('year_work', 5, 2)->nullable();
+                    $table->decimal('final_grade', 5, 2)->nullable();
+                    $table->decimal('total', 5, 2)->nullable();
+                    $table->decimal('course_grade', 5, 2)->nullable();
+                    $table->timestamps();
+
+                    $table->foreign('student_id')
+                        ->references('id')
+                        ->on('students_data')
+                        ->onDelete('cascade');
+
+                    $table->unique(['student_id']);
+                });
+                Log::info("Table $gradesTable created successfully.");
+            } else {
+                Log::info("Table $gradesTable already exists.");
             }
 
-            // Create the table without foreign key constraint
-            Schema::create($gradesTable, function (Blueprint $table) {
-                $table->id();
-                $table->unsignedBigInteger('student_id');
-                $table->decimal('midterm_exam', 5, 2)->nullable();
-                $table->decimal('practical_exam', 5, 2)->nullable();
-                $table->decimal('oral_exam', 5, 2)->nullable();
-                $table->decimal('year_work', 5, 2)->nullable();
-                $table->decimal('final_grade', 5, 2)->nullable();
-                $table->decimal('total', 5, 2)->nullable();
-                $table->decimal('course_grade', 5, 2)->nullable();
-                $table->timestamps();
-
-                $table->unique(['student_id']);
-            });
-
-            Log::info("Table $gradesTable created successfully.");
+            DB::commit();
 
             return response()->json([
                 'message' => 'Course, schedules, and grade table created successfully',
-                'course' => $course->load('schedules'),
+                'course' => $course,
                 'grade_table' => $gradesTable
             ], 201);
         } catch (\Exception $e) {
-            // Clean up resources
-            if ($course) {
-                $course->schedules()->delete();
+            // Only rollback if a transaction was started
+            if (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
+
+            // Delete course if it was created
+            if (isset($course)) {
                 $course->delete();
             }
 
-            if ($gradesTable && Schema::hasTable($gradesTable)) {
+            // Drop table if it was created
+            if (isset($gradesTable) && Schema::hasTable($gradesTable)) {
                 Schema::drop($gradesTable);
             }
 
@@ -109,6 +111,9 @@ class CourseController extends Controller
             ], 500);
         }
     }
+
+
+
     // get all courses
 
     public function index()

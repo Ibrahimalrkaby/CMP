@@ -17,18 +17,7 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:courses,name',
-            'description' => 'required|string',
-            'department' => 'required|string',
-            'level' => 'required|string',
-            'credit_hours' => 'required|integer',
-            'teacher_id' => 'nullable|exists:teacher_data,id',
-            'schedules' => 'nullable|array',
-            'schedules.*.day' => 'required_with:schedules|string',
-            'schedules.*.start_time' => 'required_with:schedules',
-            'schedules.*.end_time' => 'required_with:schedules',
-            'schedules.*.location' => 'required_with:schedules|string',
-            'schedules.*.type' => 'required_with:schedules|string',
+            // ... validation rules ...
         ]);
 
         $course = null;
